@@ -1,0 +1,54 @@
+{
+  "name": "물치 레벨업 - 물리치료사 국시 개념 학습",
+  "short_name": "물치 레벨업",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#14806f",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "/",
+  "description": "물리치료사 국가시험에 나오는 개념을 키워드 단위로 게임처럼 익히는 학습 앱",
+  "orientation": "portrait",
+  "categories": [
+    "education",
+    "medical"
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-1.png",
+      "sizes": "430x932",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "오늘의 개념과 학습 경로"
+    },
+    {
+      "src": "screenshot-2.png",
+      "sizes": "430x932",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "출제 분석과 중요도"
+    },
+    {
+      "src": "screenshot-4.png",
+      "sizes": "430x932",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "미니 게임과 순위"
+    }
+  ]
+}
