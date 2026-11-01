@@ -1,0 +1,9 @@
+{
+  "appId": "kr.mulchilevelup.app",
+  "appName": "물치 레벨업",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#ffffff"
+  }
+}
