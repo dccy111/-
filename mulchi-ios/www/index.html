@@ -49,27 +49,32 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent }
 .stack { display: flex; flex-direction: column; gap: 12px }
 .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
 .between { justify-content: space-between }
-.muted { color: var(--muted) } .small { font-size: 13.5px } .tiny { font-size: 12px }
+.muted { color: var(--muted) } .small { font-size: 13.5px } .tiny { font-size: 13px }
 h1, h2, h3 { margin: 0; text-wrap: balance }
 .sec { font-size: 16px; font-weight: 800; margin: 10px 0 0 }
 .card { background: var(--surface); border: 2px solid var(--line); border-radius: var(--r); padding: 16px 18px; min-width: 0 }
-.btn { min-height: 52px; padding: 0 18px; border-radius: 16px; border: 2px solid var(--line); border-bottom-width: 4px; background: var(--surface); font-weight: 800; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-align: center }
+.btn { min-height: 52px; padding: 0 18px; border-radius: 16px; border: 2px solid var(--line); background: var(--surface); font-weight: 800; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-align: center }
 .btn.primary { background: var(--accent); border-color: var(--accent-dk); color: var(--on-accent) }
 .btn.gold { background: var(--gold); border-color: var(--gold-dk); color: #3a2800 }
 .btn.ghost { background: transparent; border-color: transparent; min-height: 44px }
 .btn.block { width: 100% }
 .btn:disabled { opacity: .45; cursor: default }
-.btn:not(:disabled):active, .opt:not(:disabled):active, .oxb:not(:disabled):active, .node:active .dot, .rate:active { transform: translateY(2px); border-bottom-width: 2px }
+.node:active .dot { transform: translateY(2px); border-bottom-width: 2px }
+.btn:not(:disabled):active, .opt:not(:disabled):active, .oxb:not(:disabled):active, .rate:active, .game:active, .lchip:active, .mcell:active { transform: scale(.98) }
+@media (prefers-reduced-motion: reduce) { .btn:not(:disabled):active, .opt:not(:disabled):active, .oxb:not(:disabled):active, .rate:active, .game:active, .lchip:active, .mcell:active { transform: none } }
 .chip { min-height: 38px; padding: 0 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--surface); font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 6px }
 .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-dk) }
 .pill { display: inline-flex; align-items: center; gap: 5px; padding: 6px 11px; border-radius: 999px; font-weight: 800; font-size: 15px }
+.ic svg { width: 1.1em; height: 1.1em; vertical-align: -0.18em; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round }
+.stars i svg { width: 1em; height: 1em; display: block; fill: currentColor }
+.sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0 }
 .pill svg, .ico { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; flex: none }
 .pill.fire { background: var(--gold-soft); color: var(--gold-ink) } .pill.fire.on svg { fill: var(--gold); stroke: var(--gold-dk) }
-.pill.lv { background: var(--blue-soft); color: var(--blue) }
+.pill.lv { background: var(--accent-soft); color: var(--accent-dk) }
 .badge { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: 8px; font-size: 12px; font-weight: 800; background: var(--sunk); color: var(--muted); white-space: nowrap }
 b.kr { color: var(--kw-red); font-weight: 900 }
 mark.kb { color: var(--kw-blue); background: color-mix(in srgb, var(--kw-blue) 13%, transparent); font-weight: 800; padding: 0 3px; border-radius: 5px }
-.badge.g { color: #fff } .badge.gS { background: var(--kw-red) } .badge.gA { background: var(--gold-dk) } .badge.gB { background: var(--blue) } .badge.gC { background: var(--muted) }
+.badge.g { color: #fff } .badge.gS { background: var(--kw-red) } .badge.gA { background: #8f6400 } .badge.gB { background: var(--blue) } .badge.gC { background: var(--muted) }
 .src { display: inline-flex; align-self: flex-start; padding: 4px 10px; border-radius: 8px; background: var(--gold-soft); color: var(--gold-ink); font-size: 13px; font-weight: 800 }
 .rds { display: flex; gap: 4px; flex-wrap: wrap } .rds span { min-width: 34px; text-align: center; padding: 3px 0; border-radius: 7px; font-size: 12px; font-weight: 800; background: var(--sunk); color: var(--muted) } .rds span.on { background: var(--kw-red); color: #fff }
 .catl { display: flex; flex-direction: column } .cu { display: flex; flex-direction: column; gap: 6px; padding: 10px 0; border-bottom: 1px solid var(--line) } .cu:last-child { border-bottom: 0 } .cu .chip { min-height: 32px; font-size: 12.5px; padding: 4px 10px }
@@ -87,15 +92,15 @@ mark.kb { color: var(--kw-blue); background: color-mix(in srgb, var(--kw-blue) 1
 .hud .goal { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 14px; margin-left: auto }
 .ring { width: 38px; height: 38px; flex: none } .ring circle { fill: none; stroke-width: 5 } .ring .bgc { stroke: var(--sunk) } .ring .fgc { stroke: var(--gold); stroke-linecap: round; transition: stroke-dashoffset .6s ease }
 .lvcard { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; align-items: center }
-.lvbadge { grid-row: 1 / span 2; width: 58px; height: 58px; border-radius: 18px; background: var(--blue); color: #fff; display: grid; place-items: center; font-family: var(--f-display); font-size: 28px; border-bottom: 5px solid color-mix(in srgb, var(--blue) 70%, #000) }
+.lvbadge { grid-row: 1 / span 2; width: 58px; height: 58px; border-radius: 18px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-family: var(--f-display); font-size: 28px }
 
 /* 오늘 카드 */
 .today { background: var(--hero); color: #fff; border-radius: 22px; padding: 18px; display: flex; flex-direction: column; gap: 10px }
-.today .k { font-size: 13px; font-weight: 800; color: #c6efe6; display: flex; justify-content: space-between; gap: 8px }
-.today .nm { font-family: var(--f-display); font-size: 26px; line-height: 1.25 }
+.today .k { font-size: 13px; font-weight: 800; color: #fff; display: flex; justify-content: space-between; gap: 8px }
+.today .nm { font-family: var(--f-display); font-weight: 400; font-size: 26px; line-height: 1.25 }
 .today .btn { background: #fff; color: #0d5b4f; border-color: #fff; border-bottom-color: #b5ddd4 }
 .today .bar { background: rgba(255,255,255,.25) } .today .bar > i { background: var(--gold) }
-.today .tiny { color: #d3f0ea }
+.today .tiny { color: #fff }
 
 /* 경로 */
 .unit { display: flex; flex-direction: column; gap: 6px; padding-top: 6px }
@@ -135,7 +140,7 @@ mark.kb { color: var(--kw-blue); background: color-mix(in srgb, var(--kw-blue) 1
 .crow .chev { width: 16px; height: 16px; color: var(--edge) }
 .gchip { display: inline-grid; place-items: center; min-width: 20px; height: 18px; padding: 0 4px; border-radius: 6px; font-size: 11px; font-weight: 900; color: #fff } .gchip.gS { background: var(--kw-red) } .gchip.gA { background: var(--gold-dk) } .gchip.gB { background: var(--blue) } .gchip.gC { background: var(--muted) }
 .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; border-radius: 14px; background: var(--sunk) }
-.seg button { border: 0; border-radius: 10px; min-height: 40px; background: none; color: var(--muted); font: 800 13.5px var(--f-body); cursor: pointer } .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12) }
+.seg button { border: 0; border-radius: 10px; min-height: 40px; background: none; color: var(--muted); font: 800 13.5px var(--f-body); cursor: pointer } .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
 .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
 .qbtn { border: 2px solid var(--line); border-radius: 16px; background: var(--surface); color: inherit; font: inherit; padding: 12px 14px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 2px }
 .qbtn b { font-size: 14.5px; font-weight: 900 } .qbtn span { font-size: 12px; color: var(--muted); font-weight: 700 } .qbtn.warn { border-color: var(--bad); background: var(--bad-soft) } .qbtn.warn b { color: var(--bad-dk) }
@@ -143,8 +148,8 @@ mark.kb { color: var(--kw-blue); background: color-mix(in srgb, var(--kw-blue) 1
 body.gated nav.tabs { display: none }
 .gatewrap { min-height: 88vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px 0; text-align: center }
 .gatewrap .card { text-align: left }
-.gatewrap .logo { width: 72px; height: 72px; border-radius: 22px; background: var(--accent); color: #fff; display: grid; place-items: center; border-bottom: 5px solid var(--accent-dk) }
-.gatewrap .logo svg { width: 38px; height: 38px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linejoin: round }
+.gatewrap .logo { width: 72px; height: 72px; border-radius: 22px; background: #14806f; display: grid; place-items: center; overflow: hidden }
+.gatewrap .logo svg { width: 72px; height: 72px; display: block }
 .gatewrap .brand { font-size: 34px; color: var(--accent) } .gatewrap .lead { margin: 0; font-size: 19px; font-weight: 800; line-height: 1.45 }
 .gatewrap .feat { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--muted); font-weight: 700 }
 .sres { display: flex; flex-direction: column; gap: 4px; max-height: 260px; overflow-y: auto }
@@ -152,7 +157,7 @@ body.gated nav.tabs { display: none }
 .sopt:hover, .sopt:focus-visible { border-color: var(--accent) } .sopt b { font-size: 15px } .sopt small { color: var(--muted); font-weight: 700; font-size: 12px; white-space: nowrap } .sopt.add { border-style: dashed }
 .schsel { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 8px 14px; border: 2px solid var(--accent); border-radius: 14px; background: var(--accent-soft) } .schsel .btn { min-height: 36px }
 .seg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 14px; background: var(--sunk) }
-.seg2 button { border: 0; border-radius: 10px; min-height: 42px; background: none; color: var(--muted); font: 800 15px var(--f-body); cursor: pointer } .seg2 button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12) }
+.seg2 button { border: 0; border-radius: 10px; min-height: 42px; background: none; color: var(--muted); font: 800 15px var(--f-body); cursor: pointer } .seg2 button[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
 .btn.install { gap: 8px } .btn.install svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.6; transform: rotate(90deg) }
 .lb { display: flex; flex-direction: column } .lbr { display: grid; grid-template-columns: 38px minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 9px 4px; border-bottom: 1px solid var(--line) } .lbr:last-child { border-bottom: 0 }
 .lbr .rk { font: 400 18px var(--f-display); text-align: center; color: var(--muted) } .lbr.top1 .rk { color: var(--gold-dk) } .lbr.top2 .rk { color: #8a96a3 } .lbr.top3 .rk { color: #b06a2f }
@@ -162,8 +167,7 @@ body.gated nav.tabs { display: none }
 .gscroll { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none } .gscroll .chip { flex: none }
 /* 미니 게임 */
 .games { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
-.game { border: 2px solid var(--line); border-bottom-width: 5px; border-radius: 20px; background: var(--surface); color: inherit; font: inherit; padding: 14px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 150px }
-.game:active { transform: translateY(2px); border-bottom-width: 3px }
+.game { border: 2px solid var(--line); border-radius: 20px; background: var(--surface); color: inherit; font: inherit; padding: 14px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 150px }
 .game .gi { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; color: #fff }
 .game .gi svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round }
 .game b { font-size: 15.5px; font-weight: 900 } .game .gd { font-size: 12.5px; color: var(--muted); font-weight: 600; line-height: 1.45; flex: 1 } .game .gb { font-size: 12px; font-weight: 800; color: var(--gold-ink) }
@@ -189,13 +193,13 @@ body.has-sheet .wrap { padding-bottom: 300px }
 .q { font-size: 21px; font-weight: 900; line-height: 1.5; letter-spacing: -.01em; margin: 0 }
 .box { border-radius: 14px; background: var(--sunk); padding: 12px 14px; font-size: 16px }
 .opts { display: flex; flex-direction: column; gap: 10px }
-.opt { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; text-align: left; border: 2px solid var(--line); border-bottom-width: 4px; background: var(--surface); border-radius: 16px; padding: 12px 14px; font-size: 16px; font-weight: 700; line-height: 1.4 }
+.opt { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; text-align: left; border: 2px solid var(--line); background: var(--surface); border-radius: 16px; padding: 12px 14px; font-size: 16px; font-weight: 700; line-height: 1.4 }
 .opt .k { width: 30px; height: 30px; border-radius: 10px; border: 2px solid var(--line); color: var(--muted); display: grid; place-items: center; font-size: 14px; font-weight: 800 }
 .opt.ans { border-color: var(--ok); border-bottom-color: var(--ok-dk); background: var(--ok-soft) } .opt.ans .k { background: var(--ok); border-color: var(--ok); color: var(--on-accent) }
 .opt.wrong { border-color: var(--bad); border-bottom-color: var(--bad-dk); background: var(--bad-soft) } .opt.wrong .k { background: var(--bad); border-color: var(--bad); color: #fff }
 .opt.dim { opacity: .55 } .opt .tag { font-size: 12.5px; font-weight: 800 } .opt.ans .tag { color: var(--ok-dk) } .opt.wrong .tag { color: var(--bad-dk) }
 .oxrow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
-.oxb { min-height: 130px; border-radius: 22px; border: 2px solid var(--line); border-bottom-width: 6px; background: var(--surface); font: 400 60px var(--f-display); color: var(--ink) }
+.oxb { min-height: 130px; border-radius: 22px; border: 2px solid var(--line); background: var(--surface); font: 400 60px var(--f-display); color: var(--ink) }
 .oxb.ans { border-color: var(--ok); border-bottom-color: var(--ok-dk); background: var(--ok-soft); color: var(--ok-dk) } .oxb.wrong { border-color: var(--bad); border-bottom-color: var(--bad-dk); background: var(--bad-soft); color: var(--bad-dk) }
 input.txt, textarea.txt { width: 100%; min-height: 56px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); padding: 10px 14px; font-size: 17px }
 textarea.txt { min-height: 150px; line-height: 1.55; resize: vertical }
@@ -205,12 +209,12 @@ textarea.txt { min-height: 150px; line-height: 1.55; resize: vertical }
 .flip { perspective: 1200px; border: 0; background: none; padding: 0; width: 100%; text-align: center }
 .flip .in { position: relative; min-height: 260px; transition: transform .45s cubic-bezier(.3,.7,.3,1); transform-style: preserve-3d }
 .flip.on .in { transform: rotateY(180deg) }
-.flip .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border: 2px solid var(--line); border-bottom-width: 6px; border-radius: 24px; background: var(--surface); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; padding: 22px }
+.flip .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border: 2px solid var(--line); border-radius: 24px; background: var(--surface); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; padding: 22px }
 .flip .back { transform: rotateY(180deg); background: var(--accent-soft); border-color: var(--accent); border-bottom-color: var(--accent-dk) }
 .flip .ft { font-size: 23px; font-weight: 900; line-height: 1.4 } .flip .bt { font-size: 17px; font-weight: 700; line-height: 1.55 }
 .flip .hint { font-size: 13px; color: var(--muted); font-weight: 700 }
 .rates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px }
-.rate { min-height: 64px; border-radius: 16px; border: 2px solid var(--line); border-bottom-width: 4px; background: var(--surface); font-weight: 800; font-size: 14.5px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.25 }
+.rate { min-height: 64px; border-radius: 16px; border: 2px solid var(--line); background: var(--surface); font-weight: 800; font-size: 14.5px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.25 }
 .rate small { font-size: 11.5px; color: var(--muted); font-weight: 700 }
 .rate.r0 { border-color: var(--bad); color: var(--bad-dk) } .rate.r2 { border-color: var(--accent); color: var(--accent-dk) }
 /* 하단 결과 시트 */
@@ -230,12 +234,10 @@ textarea.txt { min-height: 150px; line-height: 1.55; resize: vertical }
 .endtop { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 16px 0 4px }
 .endtop .big { font: 400 46px var(--f-display); line-height: 1.1 }
 .endtop .xp { font: 400 64px var(--f-display); color: var(--gold-dk); line-height: 1 }
-.tiles3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px }
-.tile { border: 2px solid var(--line); border-radius: 16px; padding: 10px 8px; text-align: center; display: flex; flex-direction: column; gap: 0 }
-.tile b { font: 400 24px var(--f-display); line-height: 1.3 } .tile span { font-size: 12px; color: var(--muted); font-weight: 700 }
-.tile.gold { border-color: var(--gold); background: var(--gold-soft) } .tile.gold b { color: var(--gold-ink) }
-.tile.ok { border-color: var(--accent); background: var(--accent-soft) } .tile.ok b { color: var(--accent-dk) }
-.tile.blue { border-color: var(--blue); background: var(--blue-soft) } .tile.blue b { color: var(--blue) }
+.tiles3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 2px solid var(--line); border-radius: 16px; background: var(--surface) }
+.tile { padding: 12px 8px; text-align: center; display: flex; flex-direction: column; gap: 0 }
+.tile + .tile { border-left: 2px solid var(--line) }
+.tile b { font: 400 24px var(--f-display); line-height: 1.3; color: var(--ink) } .tile span { font-size: 13px; color: var(--muted); font-weight: 700 }
 .levelup { border-radius: 20px; padding: 16px; background: var(--blue); color: #fff; text-align: center; font: 400 24px var(--f-display) }
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 70; overflow: hidden }
 .confetti i { position: absolute; top: -12px; width: 9px; height: 14px; border-radius: 2px; animation: fall 1.6s ease-in forwards }
@@ -263,7 +265,7 @@ textarea.txt { min-height: 150px; line-height: 1.55; resize: vertical }
 .bdg small { font-size: 11px; color: var(--muted); font-weight: 600; line-height: 1.3 }
 .subj { display: flex; flex-direction: column; gap: 4px; padding: 10px 0; border-top: 1px solid var(--line) } .subj:first-child { border-top: 0 }
 .li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: center; padding: 11px 2px; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; width: 100% }
-.li:first-child { border-top: 0 } .li .t { font-weight: 800 } .li .s { grid-column: 1; font-size: 12.5px; color: var(--muted); font-weight: 600 } .li .r { grid-row: 1 / span 2; grid-column: 2; font-size: 13px; color: var(--muted); font-weight: 800 }
+.li:first-child { border-top: 0 } .card.li { border: 2px solid var(--line); padding: 14px 18px } .li .t { font-weight: 800 } .li .s { grid-column: 1; font-size: 13px; color: var(--muted); font-weight: 600 } .li .r { grid-row: 1 / span 2; grid-column: 2; font-size: 13px; color: var(--muted); font-weight: 800 }
 /* 탭 */
 nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: var(--surface); border-top: 2px solid var(--line); padding: 4px max(8px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(8px, env(safe-area-inset-left, 0px)) }
 nav.tabs .in { max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); height: var(--nav-h) }
@@ -283,10 +285,10 @@ nav.tabs .dotn { position: absolute; top: 4px; left: calc(50% + 6px); min-width:
 .lcard .md { font-size: 16px; line-height: 1.65 } .lcard.tip { background: var(--gold-soft); border-color: transparent } .lcard.tip .lhd { color: var(--gold-ink) }
 .lhd { font-size: 13px; font-weight: 900; color: var(--accent-dk); margin-bottom: 6px } .lq { font-size: 17px; font-weight: 700; line-height: 1.7; margin: 0 0 10px }
 .blank { display: inline-block; min-width: 88px; padding: 0 10px; margin: 0 3px; border-radius: 10px; background: var(--sunk); border-bottom: 3px solid var(--edge); text-align: center; font-weight: 900 } .blank.ok { background: var(--ok); color: var(--on-accent); border-color: var(--ok-dk) } .blank.bad { background: var(--bad-soft); color: var(--bad-dk) }
-.lchips { display: flex; flex-wrap: wrap; gap: 8px } .lchip { border: 2px solid var(--line); border-bottom-width: 4px; background: var(--surface); border-radius: 12px; padding: 8px 12px; font: 700 15px var(--f-body); color: var(--ink); cursor: pointer } .lchip.ans { border-color: var(--ok); background: var(--ok-soft) } .lchip.wrong { border-color: var(--bad); background: var(--bad-soft) } .lchip:disabled { cursor: default }
+.lchips { display: flex; flex-wrap: wrap; gap: 8px } .lchip { border: 2px solid var(--line); background: var(--surface); border-radius: 12px; padding: 8px 12px; font: 700 15px var(--f-body); color: var(--ink); cursor: pointer } .lchip.ans { border-color: var(--ok); background: var(--ok-soft) } .lchip.wrong { border-color: var(--bad); background: var(--bad-soft) } .lchip:disabled { cursor: default }
 .oxrow.sm .oxb { min-height: 76px; font-size: 40px }
 .mgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px } .mgrid > div { display: flex; flex-direction: column; gap: 8px }
-.mcell { min-height: 54px; border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 12px; background: var(--surface); color: var(--ink); font: 700 14px var(--f-body); padding: 6px 8px; cursor: pointer } .mcell.sel { border-color: var(--blue); background: var(--blue-soft) } .mcell.ans { border-color: var(--ok); background: var(--ok-soft); opacity: .7 } .mcell.wrong { border-color: var(--bad); background: var(--bad-soft) }
+.mcell { min-height: 54px; border: 2px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); font: 700 14px var(--f-body); padding: 6px 8px; cursor: pointer } .mcell.sel { border-color: var(--blue); background: var(--blue-soft) } .mcell.ans { border-color: var(--ok); background: var(--ok-soft); opacity: .7 } .mcell.wrong { border-color: var(--bad); background: var(--bad-soft) }
 .lfb { margin-top: 10px; padding: 10px 12px; border-radius: 12px; font-size: 14.5px; line-height: 1.55 } .lfb.ok { background: var(--ok-soft) } .lfb.bad { background: var(--bad-soft) } .lfb b { display: block; margin-bottom: 2px }
 .linkbtn { border: 0; background: none; color: var(--blue); font: 800 14px var(--f-body); padding: 6px 0 0; cursor: pointer }
 .linkbtn.rep { color: var(--muted, #6b7678); font-weight: 700; font-size: 13px; align-self: flex-start }
@@ -367,6 +369,8 @@ function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { co
 const norm = (s) => String(s || "").toLowerCase().replace(/[\s·・\-–—_.,/()（）[\]'"`~:;!?]/g, "");
 function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
 function maskTerm(text, term) { const names = plain(term).split(/[()（）/·,]/).map((x) => x.trim()).filter((x) => x.length >= 2); let out = plain(text); for (const n of names) out = out.split(n).join("○○"); return out; }
+const LOGO = '<svg viewBox="0 0 512 512" aria-hidden="true"><rect x="120" y="330" width="90" height="70" rx="11" fill="#fff"/><rect x="210" y="260" width="90" height="140" rx="11" fill="#fff"/><rect x="300" y="190" width="91" height="210" rx="11" fill="#f4b324"/><path d="M345 95 280 165h130z" fill="#f4b324"/></svg>';
+const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"/></svg>';
 const I = {
   heart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
   search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>',
@@ -388,6 +392,17 @@ const I = {
   target: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>',
   brain: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3V4zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3V4z"/></svg>',
 };
+const IC = Object.fromEntries(Object.entries({
+  ok: '<path d="M4 12.5l5 5L20 6.5"/>',
+  no: '<path d="M6 6l12 12M18 6L6 18"/>',
+  speak: '<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/>',
+  key: '<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3"/>',
+  book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/>',
+  pen: '<path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/>',
+  flag: '<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+  trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8"/>',
+  crown: '<path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>',
+}).map(([k, d]) => [k, `<span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24">${d}</svg></span>`]));
 
 /* ================= 저장 ================= */
 const KEY = "ptlvl-v1";
@@ -402,7 +417,7 @@ function save() { S.mt = Date.now(); try { localStorage.setItem(KEY, JSON.string
 const CFG = {"supabaseUrl":"https://ipmivlwitujdstwzixfx.supabase.co","supabaseAnonKey":"sb_publishable_CvuD77QFtEvIMDQHV6tKhQ_CGyJI-yl","providers":[],"appScheme":"kr.mulchilevelup.app"};
 const AUTH_KEY = "ptlvl-auth";
 const DOCS = {"privacy":"# 개인정보처리방침\n\n물치 레벨업(이하 ‘서비스’)을 운영하는 [운영자 정보 입력 필요](이하 ‘운영자’)는 「개인정보 보호법」에 따라 이용자의 개인정보를 보호하고 관련 고충을 신속하게 처리하기 위해 다음과 같이 개인정보처리방침을 둡니다.\n\n## 1. 처리하는 개인정보 항목\n- **회원가입하는 경우:**\n  - 아이디, 비밀번호(복호화할 수 없는 방식으로 암호화해 저장), 학교 이름\n  - 아이디와 학교는 순위표에 다른 이용자에게 표시됩니다\n  - 카카오·Google 로그인을 쓰면: 해당 서비스가 제공하는 계정 식별자, 이메일 주소(동의한 경우)\n  - 학습 기록: 키워드별 풀이 기록, 경험치, 일별 학습량, 배지, 하루 목표·시험일 등 앱 설정\n  - 자동 생성 정보: 접속 일시, IP 주소 등 서비스 이용 기록(보안·오류 대응 목적, 서버 운영사 로그)\n  - 문제 신고를 보내는 경우: 신고한 문제 번호, 신고 이유, 직접 쓴 메모, 앱 버전\n- **앱 오류가 생긴 경우(로그인 여부와 관계없이):** 오류 내용, 오류가 난 코드 위치와 화면 이름, 앱 버전, 기기·브라우저 종류(User-Agent). 로그인한 상태라면 계정 식별자가 함께 저장됩니다\n\n## 2. 처리 목적\n- 회원 식별과 로그인 유지\n- 여러 기기에서 학습 기록을 이어서 쓸 수 있도록 저장·동기화\n- 부정 이용 방지, 오류 확인 등 서비스 안정성 확보\n- 문제 신고 확인과 콘텐츠 오류 수정\n\n## 3. 보유·이용 기간\n- 회원 탈퇴(앱의 ‘계정 삭제’) 시 계정과 서버의 학습 기록을 **지체 없이 파기**합니다.\n- 앱 오류 기록은 **30일**이 지나면 자동으로 지웁니다. 문제 신고는 계정을 삭제하면 함께 지웁니다.\n- 1년 이상 로그인하지 않은 계정은 서비스 안 공지 후 파기하거나 분리 보관할 수 있습니다.\n- 관계 법령에 따라 보존이 필요한 경우 그 기간 동안 보관합니다.\n\n## 4. 제3자 제공\n운영자는 이용자의 개인정보를 제3자에게 제공하지 않습니다. 법령에 따른 요청이 있는 경우는 예외입니다.\n\n## 5. 처리 위탁 및 국외 이전\n서비스 운영을 위해 아래와 같이 처리를 위탁하며, 이 과정에서 개인정보가 국외로 이전될 수 있습니다.\n\n| 수탁자 | 위탁 업무 | 이전 국가 | 이전 항목 | 이전 일시·방법 | 보유 기간 |\n|---|---|---|---|---|---|\n| Supabase, Inc. | 회원 인증, 학습 기록·게임 점수·문제 신고·앱 오류 기록 저장(클라우드 데이터베이스) | 대한민국(서울, ap-northeast-2) | 1항의 정보 | 로그인·학습·신고·오류 발생 시 네트워크로 전송 | 회원 탈퇴 시까지(오류 기록은 30일) |\n\n국외 이전에 동의하지 않으면 회원가입을 하지 않을 수 있으나, 이 경우 서비스를 이용할 수 없습니다.\n\n## 6. 이용자의 권리\n이용자는 언제든지 앱에서 다음을 할 수 있습니다.\n- 학습 기록 열람·내보내기: 성장 탭 › 기록 내보내기\n- 기록 삭제: 성장 탭 › 기록 모두 지우기(기기)\n- 회원 탈퇴 및 서버 기록 삭제: 성장 탭 › 계정 › 계정 삭제\n\n그 밖의 요청은 아래 연락처로 할 수 있으며, 지체 없이 처리합니다.\n\n## 7. 만 14세 미만 아동\n서비스는 만 14세 미만 아동의 회원가입을 받지 않습니다.\n\n## 8. 안전성 확보 조치\n- 전송 구간 암호화(HTTPS)\n- 데이터베이스 행 단위 접근 제어: 본인 기록만 읽고 쓸 수 있음\n- 비밀번호는 원문을 알 수 없도록 일방향 암호화해 저장\n\n## 9. 개인정보 보호책임자\n- 책임자: [운영자 정보 입력 필요]\n- 연락처: [연락처 입력 필요]\n\n개인정보 침해 신고·상담은 개인정보침해신고센터(국번 없이 118, privacy.kisa.or.kr), 개인정보분쟁조정위원회(1833-6972, kopico.go.kr)에도 할 수 있습니다.\n\n## 10. 시행일\n이 방침은 2026-11-01부터 적용합니다.\n","terms":"# 이용약관\n\n## 1. 목적\n이 약관은 [운영자 정보 입력 필요](이하 ‘운영자’)가 제공하는 물치 레벨업(이하 ‘서비스’)의 이용 조건을 정합니다.\n\n## 2. 서비스 내용\n- 서비스는 물리치료사 국가시험 준비를 위한 자체 제작 학습 콘텐츠(개념 카드, OX, 키워드 문제 등)와 학습 기록 기능을 제공합니다.\n- 서비스는 한국보건의료인국가시험원과 관련이 없습니다. 국가시험 문제를 싣지 않습니다.\n- ‘출제 분석’과 ‘중요도’는 공개된 과거 시험에서 개념이 다뤄진 빈도를 운영자가 분류한 참고 정보입니다. 실제 출제를 보장하지 않습니다.\n\n## 3. 콘텐츠의 정확성\n- 학습 콘텐츠는 AI의 도움을 받아 작성했고 검수를 계속하고 있습니다. 오류가 있을 수 있습니다.\n- 법규 내용은 개정될 수 있으니 시험 전에 현행 법령(국가법령정보센터)으로 확인하세요.\n- 서비스는 의료 행위나 임상 판단을 대신하지 않습니다.\n- 오류를 발견하면 [연락처 입력 필요]로 알려 주세요. 확인 후 고칩니다.\n\n## 4. 계정\n- 서비스는 회원가입 후 이용할 수 있습니다. 아이디·비밀번호·학교로 가입하며, 아이디와 학교는 순위표에 표시됩니다.\n- 비밀번호는 이용자가 관리합니다. 이메일을 받지 않으므로 비밀번호를 잊으면 운영자에게 문의해야 합니다.\n- 다른 사람을 사칭하거나 불쾌감을 주는 아이디는 운영자가 변경하거나 이용을 제한할 수 있습니다.\n- 이용자는 언제든지 앱에서 계정을 삭제할 수 있습니다. 삭제하면 서버의 학습 기록도 함께 지워지고 복구할 수 없습니다.\n\n## 5. 금지 행위\n- 서비스 콘텐츠를 무단으로 복제·배포·판매하는 행위\n- 서비스 운영을 방해하거나 다른 사람의 계정을 이용하는 행위\n\n## 6. 지식재산권\n서비스의 콘텐츠와 디자인에 대한 권리는 운영자에게 있습니다.\n\n## 7. 책임의 한계\n운영자는 무료로 제공되는 서비스의 이용과 관련하여 고의 또는 중대한 과실이 없는 한 책임을 지지 않습니다. 시험 결과에 대해서도 책임을 지지 않습니다.\n\n## 8. 약관 변경\n약관을 바꿀 때는 시행 7일 전에 서비스 안에서 알립니다.\n\n## 9. 준거법\n이 약관은 대한민국 법을 따릅니다.\n\n부칙: 이 약관은 2026-11-01부터 적용합니다.\n"};
-const APPVER = "a09f37cd";
+const APPVER = "058d9c31";
 /** 고장 알림벨: 처리되지 않은 오류를 오류 내용·위치·화면·버전만 서버에 남긴다(세션당 5건, 같은 오류는 한 번) */
 const ErrLog = { n: 0, seen: new Set(), clean: (x) => String(x || "").replace(/[#?].*$/, ""),
   send(msg, src) { try {
@@ -592,7 +607,7 @@ function checkBadges() { const got = []; for (const [id, name, , , ok] of BADGES
 /* ================= 경로(과목 → 대분류 → 개념) ================= */
 /** 별: 그 개념 연습 한 판에서 첫 시도 정답률(최고 기록) 100% = 3개, 70% 이상 = 2개, 끝까지 풀면 1개 */
 function starsOf(s) { const r = S.skills[s.id]; if (!r || !r.n) return 0; return r.best >= 100 ? 3 : r.best >= 70 ? 2 : 1; }
-const starHtml = (n, cls = "") => `<span class="stars ${cls}" aria-label="별 ${n}개">${[0, 1, 2].map((i) => `<i class="${i < n ? "on" : ""}">★</i>`).join("")}</span>`;
+const starHtml = (n, cls = "") => `<span class="stars ${cls}" aria-label="별 ${n}개">${[0, 1, 2].map((i) => `<i class="${i < n ? "on" : ""}">${STAR}</i>`).join("")}</span>`;
 /** 다음 학습: 마지막으로 공부한 개념의 바로 다음부터 아직 별이 없는 개념. 처음이면 맨 앞부터 */
 function nextSkill() {
   const L = D.skills; const at = S.last ? L.findIndex((s) => s.id === S.last) : -1;
@@ -612,6 +627,7 @@ function render() {
   const fn = (g ? V[g] : V[route.name]) || V.home; // 화면이 없으면 홈으로(빈 화면에서 멈추지 않게)
   document.body.classList.toggle("gated", !!g);
   document.getElementById("app").innerHTML = fn(route.p);
+  if (!document.querySelector("#app h1")) { const h = document.createElement("h1"); h.className = "sr"; h.textContent = ({ review: "복습", stats: "성장", rank: "순위", signup: "가입 마무리", loading: "물치 레벨업" })[g || route.name] || "물치 레벨업"; document.getElementById("app").prepend(h); }
   const live = route.name === "play";
   document.body.classList.toggle("immersive", live || route.name === "end" || route.name === "intro" || route.name === "lesson");
   document.body.classList.toggle("has-sheet", !!document.querySelector("#app .sheet"));
@@ -635,7 +651,7 @@ V.home = () => {
     ${resume ? `<button class="btn gold block" data-act="resume">이어서 풀기 · ${esc(resume.title)} (${Math.min(resume.i + 1, resume.q.length)}/${resume.q.length})</button>` : ""}
     ${nx ? `<section class="today" data-testid="today">
       <div class="k"><span>${st.seen ? "다음 개념 · 숙련도 올리기" : "오늘의 개념"}</span><span>${esc(SUBJ.find((s) => s.id === nx.subj)?.name || "")}</span></div>
-      <div class="nm">${esc(nx.name)}</div>
+      <h1 class="nm">${esc(nx.name)}</h1>
       <div class="row" style="gap:6px">${nx.ana && nx.ana.grade ? gradeBadge(nx.ana.grade) : ""}<span class="badge" style="background:rgba(255,255,255,.18);color:#fff">키워드 ${nx.items.length}개${nx.freq ? ` · ${nx.freq}개 회차 출제` : ""}</span></div>
       <div class="bar" aria-hidden="true"><i style="width:${st.mastery}%"></i></div>
       <div class="tiny">숙련도 ${st.mastery}% · 약 3~4분, 10문제 · 맞히면 +10 XP</div>
@@ -669,7 +685,7 @@ function skillSheet(id) {
     <div class="bar"><i style="width:${st.mastery}%"></i></div><div class="small"><b class="num">${st.mastery}%</b> · 본 키워드 ${st.seen}/${st.n}${st.due ? ` · <b style="color:var(--bad-dk)">복습할 것 ${st.due}개</b>` : ""}</div>
     <div class="row" style="gap:6px">${Object.entries(kinds).sort((a, b) => KRANK[a[0]] - KRANK[b[0]]).map(([k, n]) => `<span class="badge">${KIND[k]} ${n}</span>`).join("")}</div>
     ${anaCard(s)}
-    <div class="small muted">별: 한 판(10문제)을 처음 시도에 다 맞히면 ★3 · 70% 이상 ★2 · 끝까지 풀면 ★1. 가장 잘한 기록이 남아요. 숙련도 ${st.level}단계는 시간이 지나도 기억하는지를 따로 보여줘요.</div>
+    <div class="small muted">별: 한 판(10문제)을 처음 시도에 다 맞히면 별 3개 · 70% 이상 별 2개 · 끝까지 풀면 별 1개. 가장 잘한 기록이 남아요. 숙련도 ${st.level}단계는 시간이 지나도 기억하는지를 따로 보여줘요.</div>
     <button class="btn primary block" data-act="start" data-id="${s.id}">${st.seen ? "학습하기 (10문제)" : "시작하기"}</button>
     ${s.lesson ? `<button class="btn block" data-act="lesson" data-id="${s.id}" data-testid="lesson-open">단계별 레슨 ${(S.lessons || {})[s.id] ? "다시 보기" : "먼저 보기"} (${s.lesson.cards.filter((c) => c.t === "ex").length}개 설명)</button>` : s.intro ? `<button class="btn block" data-act="introView" data-id="${s.id}">개념 카드 먼저 보기</button>` : ""}
     <button class="btn ghost" data-act="modalClose">닫기</button>`);
@@ -743,12 +759,12 @@ const canSpeak = () => typeof window.speechSynthesis !== "undefined" && typeof w
 function speak(text) { if (!canSpeak()) return; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(plain(text).replace(/[|#>*_=-]+/g, " ")); u.lang = "ko-KR"; u.rate = 1.02; speechSynthesis.speak(u); }
 function lessonCardHtml(s, c, i, cur) {
   const old = i < cur ? "old" : ""; const a = LES.ans[i];
-  const fb = a ? `<div class="lfb ${a.ok ? "ok" : "bad"}"><b>${a.ok ? "✓ 정답" : `✗ 정답: ${esc(c.t === "ox" ? (c.a ? "O" : "X") : c.t === "match" ? "아래 짝" : plain(c.a))}`}</b>${c.e ? `<div>${inl(c.e)}</div>` : ""}${!a.ok && i === cur ? `<button class="linkbtn" data-act="lessonRe">설명 다시 보기 ↑</button>` : ""}${repBtn(`L:${s.id}:${i}`)}</div>` : "";
+  const fb = a ? `<div class="lfb ${a.ok ? "ok" : "bad"}"><b>${a.ok ? IC.ok + " 정답" : `${IC.no} 정답: ${esc(c.t === "ox" ? (c.a ? "O" : "X") : c.t === "match" ? "아래 짝" : plain(c.a))}`}</b>${c.e ? `<div>${inl(c.e)}</div>` : ""}${!a.ok && i === cur ? `<button class="linkbtn" data-act="lessonRe">설명 다시 보기 ↑</button>` : ""}${repBtn(`L:${s.id}:${i}`)}</div>` : "";
   const say = a && i === cur ? `<div class="msay">${MASCOT}<div class="bub">${a.ok ? pickOne(PRAISE, i) : pickOne(COMFORT, i)}</div></div>` : "";
   if (c.t === "say") return `<div class="msay ${old}">${MASCOT}<div class="bub">${inl(c.text)}</div></div>`;
   if (c.t === "ex" || c.t === "tip") {
-    const tools = `<div class="ltools">${canSpeak() ? `<button class="tl" data-act="lessonSpeak" data-i="${i}">🔊 듣기</button>` : ""}</div>`;
-    return `<section class="lcard ${c.t} ${old}" data-li="${i}"><div class="lhd">${c.t === "tip" ? "🔑 " + esc(c.h || "이렇게 기억하기") : "📖 " + esc(c.h || "설명")}</div><div class="md">${md(c.body)}</div>${c.fig && FIGS[c.fig] ? `<figure class="fig">${FIGS[c.fig]}</figure>` : ""}${i === cur ? tools : ""}</section>`;
+    const tools = `<div class="ltools">${canSpeak() ? `<button class="tl" data-act="lessonSpeak" data-i="${i}">${IC.speak} 듣기</button>` : ""}</div>`;
+    return `<section class="lcard ${c.t} ${old}" data-li="${i}"><div class="lhd">${c.t === "tip" ? IC.key + " " + esc(c.h || "이렇게 기억하기") : IC.book + " " + esc(c.h || "설명")}</div><div class="md">${md(c.body)}</div>${c.fig && FIGS[c.fig] ? `<figure class="fig">${FIGS[c.fig]}</figure>` : ""}${i === cur ? tools : ""}</section>`;
   }
   const lock = a ? "disabled" : "";
   let body = "";
@@ -762,7 +778,7 @@ function lessonCardHtml(s, c, i, cur) {
       return `<button class="mcell ${got ? "ans" : ""} ${sel ? "sel" : ""} ${bad ? "wrong" : ""}" ${got || a ? "disabled" : `data-act="lessonMatch" data-i="${i}" data-side="${side}" data-k="${k}"`}>${inl(c.pairs[k][side === "L" ? 0 : 1])}</button>`; };
     body = `<p class="lq">${inl(c.q || "알맞은 짝을 탭해 보세요")}</p><div class="mgrid"><div>${m.L.map((k) => cell(k, "L")).join("")}</div><div>${m.R.map((k) => cell(k, "R")).join("")}</div></div>`; }
   const kind = { ox: "OX", cloze: "빈칸 채우기", pick: "골라 보기", case: "임상 사례로 확인", match: "짝 맞추기" }[c.t];
-  return `${say}<section class="lcard q ${old}" data-li="${i}"><div class="lhd">✏️ ${kind}</div>${body}${fb}</section>`;
+  return `${say}<section class="lcard q ${old}" data-li="${i}"><div class="lhd">${IC.pen} ${kind}</div>${body}${fb}</section>`;
 }
 V.lesson = () => {
   if (!LES) return V.home(); const s = SK.get(LES.id); const cards = lessonCards(s); const N = cards.length;
@@ -953,10 +969,10 @@ V.play = () => {
   }
   return `${head}<div class="stack" style="margin-top:8px;gap:14px">${body}</div>${foot}`;
 };
-/** 🚩 신고 버튼(로그인한 사용자만) */
-const repBtn = (id) => (Cloud.on && Cloud.profile && id ? `<button class="linkbtn rep" data-act="report" data-rid="${esc(id)}">🚩 문제 신고</button>` : "");
+/** 신고 버튼(로그인한 사용자만) */
+const repBtn = (id) => (Cloud.on && Cloud.profile && id ? `<button class="linkbtn rep" data-act="report" data-rid="${esc(id)}">${IC.flag} 문제 신고</button>` : "");
 function sheet(ok, side, body, extra = "") {
-  return `<div class="sheet ${ok ? "ok" : "bad"}" role="status"><div class="in"><div class="sv"><span>${ok ? "✓ 맞았어요" : "✗ 아쉬워요"}</span>${side ? `<small>${side}</small>` : ""}</div>${body ? `<div class="se">${body}</div>` : ""}${extra}${repBtn(S.cur && S.cur.q[S.cur.i] && S.cur.q[S.cur.i].id)}<button class="btn primary block" data-act="next">계속</button></div></div>`;
+  return `<div class="sheet ${ok ? "ok" : "bad"}" role="status"><div class="in"><div class="sv"><span>${ok ? IC.ok + " 맞았어요" : IC.no + " 아쉬워요"}</span>${side ? `<small>${side}</small>` : ""}</div>${body ? `<div class="se">${body}</div>` : ""}${extra}${repBtn(S.cur && S.cur.q[S.cur.i] && S.cur.q[S.cur.i].id)}<button class="btn primary block" data-act="next">계속</button></div></div>`;
 }
 /** 한 문제 채점: 기억 갱신 + XP + 콤보 + 소리. 틀린 문제는 세션 끝에 한 번 더 */
 function answer(ok, extra = {}, grade) {
@@ -1021,9 +1037,9 @@ V.end = () => {
     ${G ? `<section class="card stack" style="gap:6px" data-testid="scorecard"><div class="row between"><b>점수 계산</b><span class="small muted">최고 ${S.best[c.mode] || 0}점</span></div><div class="small muted">${G.ruleText}${c.timeBonus ? ` · 시간 보너스 +${c.timeBonus}` : ""}</div>${Cloud.on && Cloud.profile ? `<div class="small" style="font-weight:800">${c.rank ? `이번 주 순위 <span class="num" style="color:var(--accent-dk)">${c.rank}위</span>` : c.posted === false ? "순위 등록에 실패했어요(연결 확인)" : "순위 등록 중…"}</div>` : ""}</section>` : ""}
     <div class="tiles3">${G ? `<div class="tile gold"><b class="num">${c.score}점</b><span>${c.newBest ? "신기록!" : "이번 점수"}</span></div><div class="tile"><b class="num">${c.cor || 0} / ${c.wr || 0}</b><span>${c.mode === "rush" ? "짝 / 실수" : "정답 / 오답"}</span></div>` : `<div class="tile ok"><b class="num">${c.acc}%</b><span>첫 시도 정답률</span></div><div class="tile"><b class="num">${Math.floor(secs / 60)}:${pad(secs % 60)}</b><span>걸린 시간</span></div>`}<div class="tile blue"><b class="num">${c.maxCombo}</b><span>최대 콤보</span></div></div>
     <section class="card stack" style="gap:8px"><div class="row between"><b>오늘 목표</b><span class="num small" style="font-weight:800">${d.xp} / ${S.goal} XP</span></div><div class="bar gold"><i style="width:${Math.min(100, (d.xp / S.goal) * 100)}%"></i></div>${goalHit ? `<div class="small" style="color:var(--gold-ink);font-weight:800">오늘 목표 달성! 연속 학습 ${streak()}일째</div>` : d.xp < S.goal ? `<div class="small muted">목표까지 ${S.goal - d.xp} XP</div>` : ""}</section>
-    ${c.sid ? `<section class="card stack" style="gap:6px;align-items:center;text-align:center" data-testid="stars-end">${starHtml(c.st1 || 0, "xl")}<div class="small"><b>${c.st1 > (c.st0 || 0) ? "별을 새로 얻었어요!" : c.st1 === 3 ? "이미 별 3개 만점이에요" : "가장 잘한 기록이 남아요"}</b><br><span class="muted">이번 첫 시도 정답률 ${c.acc}% · 다 맞히면 ★3 · 70% 이상 ★2</span></div></section>` : ""}
+    ${c.sid ? `<section class="card stack" style="gap:6px;align-items:center;text-align:center" data-testid="stars-end">${starHtml(c.st1 || 0, "xl")}<div class="small"><b>${c.st1 > (c.st0 || 0) ? "별을 새로 얻었어요!" : c.st1 === 3 ? "이미 별 3개 만점이에요" : "가장 잘한 기록이 남아요"}</b><br><span class="muted">이번 첫 시도 정답률 ${c.acc}% · 다 맞히면 별 3개 · 70% 이상 별 2개</span></div></section>` : ""}
     ${c.sid ? `<section class="card stack" style="gap:8px"><div class="row between"><b>${esc(SK.get(c.sid).name)} 숙련도</b><span class="num small" style="font-weight:800">${c.m0}% → <span style="color:var(--accent-dk)">${c.m1}%</span></span></div><div class="bar"><i style="width:${c.m1}%"></i></div><div class="small muted">맞힌 키워드는 기억 간격이 늘어나요. 잊을 때쯤 복습에 다시 나와요.</div></section>` : ""}
-    <section class="card stack" style="gap:6px"><div class="row between"><b>레벨 ${lv.L}</b><span class="num small" style="font-weight:800">${lv.cur} / ${lv.need} XP</span></div><div class="bar blue"><i style="width:${(lv.cur / lv.need) * 100}%"></i></div></section>
+    <section class="card stack" style="gap:6px"><div class="row between"><b>레벨 ${lv.L}</b><span class="num small" style="font-weight:800">${lv.cur} / ${lv.need} XP</span></div><div class="bar"><i style="width:${(lv.cur / lv.need) * 100}%"></i></div></section>
     ${c.newBadges && c.newBadges.length ? `<section class="card" style="border-color:var(--gold);background:var(--gold-soft)"><b>새 배지</b><div class="small">${c.newBadges.map(esc).join(", ")}</div></section>` : ""}
     <div class="stack" style="gap:8px">${G ? `<button class="btn primary block" data-act="game" data-g="${c.mode}">한 판 더</button>${Cloud.on && Cloud.profile ? `<button class="btn block" data-act="openRank" data-g="${c.mode}" data-testid="end-rank">${G.name} 순위 보기</button>` : ""}<button class="btn block" data-act="tab" data-k="review">다른 게임 고르기</button>` : ""}${c.mode === "skill" ? `<button class="btn primary block" data-act="start" data-id="${c.sid}">한 번 더 (숙련도 올리기)</button>` : ""}${nx && nx.id !== c.sid ? `<button class="btn block" data-act="start" data-id="${nx.id}">다음 개념: ${esc(nx.name)}</button>` : ""}<button class="btn ghost block" data-act="home">경로로 돌아가기</button></div>
   </div>`;
@@ -1040,7 +1056,7 @@ V.review = () => {
     <section class="card stack" style="gap:10px;${due.length ? "border-color:var(--bad)" : ""}"><div class="row between"><h2 style="font-size:20px;font-weight:900">오늘의 복습</h2><span class="badge ${due.length ? "warn" : ""} num">${due.length}개</span></div>
       <div class="small muted">${due.length ? "잊어버리기 직전인 키워드부터, 여러 개념을 섞어서 내요." : started ? "지금은 잊어 가는 키워드가 없어요. 약한 것부터 미리 볼 수 있어요." : "개념을 하나 공부하면 복습할 키워드가 쌓여요."}</div>
       <button class="btn primary block" data-act="startReview" ${started ? "" : "disabled"}>${due.length ? `복습 ${Math.min(12, due.length)}문제 시작 · 정답마다 +5 보너스` : started ? "약한 것 미리 보기" : "먼저 개념을 학습해 보세요"}</button></section>
-    <div><div class="row between" style="margin-bottom:8px"><h2 class="sec" style="margin:0">미니 게임 <span class="muted small">1~2분</span></h2>${Cloud.on && Cloud.profile ? `<button class="chip" data-act="openRank" data-g="${BOARD.game}" data-testid="rank-top">🏆 게임별 순위</button>` : ""}</div>
+    <div><div class="row between" style="margin-bottom:8px"><h2 class="sec" style="margin:0">미니 게임 <span class="muted small">1~2분</span></h2>${Cloud.on && Cloud.profile ? `<button class="chip" data-act="openRank" data-g="${BOARD.game}" data-testid="rank-top">${IC.trophy} 게임별 순위</button>` : ""}</div>
       <div class="games">${tile("sgrade", true)}${tile("exam", true)}${["muscle", "tests", "attack", "duel", "survive", "rush"].map((k) => tile(k)).join("")}</div>
       <div class="row between" style="margin-top:10px"><span class="small" style="font-weight:800">게임 출제 범위</span><div class="row" style="gap:6px" role="group" aria-label="게임 출제 범위"><button class="chip" data-act="scope" data-v="all" aria-pressed="${S.gameScope !== "S"}">전체 개념</button><button class="chip" data-act="scope" data-v="S" aria-pressed="${S.gameScope === "S"}">S급만</button></div></div>
       <div class="tiny muted" style="margin-top:8px">틀리면 감점이라 아무거나 눌러서는 점수가 오르지 않아요. 게임 결과도 키워드 기억에 반영돼요.</div></div>
@@ -1079,7 +1095,7 @@ const editProfileHtml = () => `<b style="font-size:18px">학교 바꾸기</b><di
 V.loading = () => `<div class="gatewrap" data-testid="loading"><div class="disp brand">물치 레벨업</div><div class="small muted">계정 정보를 불러오는 중…</div></div>`;
 V.login = () => { const su = LOGIN.mode === "signup";
   return `<div class="gatewrap" data-testid="login">
-  <div class="logo">${I.bolt}</div><div class="disp brand">물치 레벨업</div>
+  <div class="logo">${LOGO}</div><h1 class="disp brand">물치 레벨업</h1>
   <p class="lead">물리치료사 국시 개념을<br>하루 몇 분, 게임처럼.</p>
   <ul class="feat"><li><b class="kr">S급</b> 중요 개념부터 · 46~53회 출제 분석</li><li>카드 · OX · 미니 게임 6종과 <b>학교별 순위</b></li><li>잊기 직전에 다시 나오는 간격 반복 복습</li></ul>
   <section class="card stack" style="gap:12px;width:100%">
@@ -1145,12 +1161,12 @@ function podiumHtml(rows) {
   rows = rows.map((x, i) => ({ ...x, rn: x.rn != null ? Number(x.rn) : i + 1 })); // 예전 서버 함수(rn 없음)도 지원
   const me = rows.find((x) => x.is_me); const byRn = new Map(rows.map((x) => [x.rn, x]));
   const top = [2, 1, 3].map((n) => byRn.get(n));
-  const pod = `<div class="podium" data-testid="podium">${top.map((x, k) => { const n = [2, 1, 3][k]; return x ? `<div class="pc p${n} ${x.is_me ? "me" : ""}">${n === 1 ? '<span class="crown">👑</span>' : ""}${avatar(x, "lg")}<b>${esc(x.username)}${x.is_me ? " (나)" : ""}</b><small>${esc(x.school)}</small><div class="blk"><span class="num">${x.rank}</span><em class="num">${x.score}점</em></div></div>` : `<div class="pc p${n} empty"><span class="ava lg">?</span><b>비어 있음</b><small>&nbsp;</small><div class="blk"><span class="num">${n}</span></div></div>`; }).join("")}</div>`;
+  const pod = `<div class="podium" data-testid="podium">${top.map((x, k) => { const n = [2, 1, 3][k]; return x ? `<div class="pc p${n} ${x.is_me ? "me" : ""}">${n === 1 ? `<span class="crown">${IC.crown}</span>` : ""}${avatar(x, "lg")}<b>${esc(x.username)}${x.is_me ? " (나)" : ""}</b><small>${esc(x.school)}</small><div class="blk"><span class="num">${x.rank}</span><em class="num">${x.score}점</em></div></div>` : `<div class="pc p${n} empty"><span class="ava lg">?</span><b>비어 있음</b><small>&nbsp;</small><div class="blk"><span class="num">${n}</span></div></div>`; }).join("")}</div>`;
   const line = (x) => `<div class="lbr rr ${x.is_me ? "me" : ""}" data-testid="${x.is_me ? "rank-me" : ""}"><span class="rk num">${x.rank}</span>${avatar(x)}<span><b>${esc(x.username)}${x.is_me ? " (나)" : ""}</b><small>${esc(x.school)}</small></span><span class="sc num">${x.score}</span></div>`;
   const list = rows.filter((x) => x.rn >= 4 && x.rn <= 10); const near = me && me.rn > 10 ? rows.filter((x) => x.rn > 10 && Math.abs(x.rn - me.rn) <= 1) : [];
   let goal = "";
   if (me) { const above = rows.filter((x) => x.score > me.score).sort((a, b) => a.score - b.score)[0];
-    goal = !above ? `<div class="rgoal" data-testid="rank-goal">🏆 지금 1위예요! 자리를 지켜 보세요</div>` : `<div class="rgoal" data-testid="rank-goal">▲ <b class="num">${above.score - me.score + 1}점</b>만 더 얻으면 <b class="num">${above.rank}위</b></div>`; }
+    goal = !above ? `<div class="rgoal" data-testid="rank-goal">${IC.trophy} 지금 1위예요! 자리를 지켜 보세요</div>` : `<div class="rgoal" data-testid="rank-goal">▲ <b class="num">${above.score - me.score + 1}점</b>만 더 얻으면 <b class="num">${above.rank}위</b></div>`; }
   const players = rows[0].players ? `<div class="tiny muted" style="text-align:center">참가 ${rows[0].players}명</div>` : "";
   return `<section class="card" style="padding:14px 12px 6px" data-testid="ranklist">${pod}<div class="lb">${list.map(line).join("")}${near.length ? `<div class="dots" aria-hidden="true">• • •</div>${near.map(line).join("")}` : ""}</div>${goal}${me ? "" : `<div class="rgoal muted">한 판 하면 내 순위가 여기 나와요</div>`}${players}</section>`;
 }
@@ -1184,7 +1200,7 @@ V.stats = () => {
   const totalN = Object.values(S.days).reduce((a, d) => a + d.n, 0); const totalOk = Object.values(S.days).reduce((a, d) => a + d.ok, 0);
   const goalDays = Object.values(S.days).filter((d) => d.xp >= S.goal).length;
   return `${hud()}<div class="stack" style="gap:14px">
-    <section class="card lvcard" data-testid="level"><div class="lvbadge num">${lv.L}</div><div style="font-weight:900;font-size:18px">레벨 ${lv.L} · 누적 <span class="num">${S.xp}</span> XP</div><div><div class="bar blue"><i style="width:${(lv.cur / lv.need) * 100}%"></i></div><div class="tiny muted" style="margin-top:4px">다음 레벨까지 <b class="num">${lv.need - lv.cur}</b> XP</div></div></section>
+    <section class="card lvcard" data-testid="level"><div class="lvbadge num">${lv.L}</div><div style="font-weight:900;font-size:18px">레벨 ${lv.L} · 누적 <span class="num">${S.xp}</span> XP</div><div><div class="bar"><i style="width:${(lv.cur / lv.need) * 100}%"></i></div><div class="tiny muted" style="margin-top:4px">다음 레벨까지 <b class="num">${lv.need - lv.cur}</b> XP</div></div></section>
     <div class="tiles3"><div class="tile gold"><b class="num">${st}</b><span>연속 학습일</span></div><div class="tile ok"><b class="num">${mb.long + mb.known}</b><span>익힌 키워드</span></div><div class="tile blue"><b class="num">${totalN ? pct(totalOk, totalN) : 0}%</b><span>전체 정답률</span></div></div>
     <section class="card stack" style="gap:8px"><div class="row between"><b>이번 주 경험치</b><span class="small num" style="font-weight:800">${thisW} XP ${lastW ? `<span style="color:${thisW >= lastW ? "var(--accent-dk)" : "var(--bad-dk)"}">(지난주 대비 ${thisW >= lastW ? "+" : ""}${pct(thisW - lastW, lastW)}%)</span>` : ""}</span></div>
       <div class="chart7" role="img" aria-label="최근 7일 경험치">${days7.map((d) => { const x = S.days[d]?.xp || 0; return `<div class="c"><em class="num">${x || ""}</em><i class="${x >= S.goal ? "met" : ""}" style="height:${(x / max) * 100}px"></i><span>${wd[new Date(d + "T00:00:00").getDay()]}</span></div>`; }).join("")}<div class="gl" style="bottom:${(S.goal / max) * 100 + 20}px" aria-hidden="true"></div></div>
@@ -1308,7 +1324,7 @@ const A = {
       <div class="tiny muted">시험 구성(50~53회 문제지 기준): 1교시 물리치료 기초 60 · 진단평가 45, 2교시 중재 65 · 의료관계법규 20, 그리고 실기시험. 합격기준은 대한물리치료사협회 안내 기준이며, 응시 전에 국시원 공고로 꼭 확인하세요.</div>
       <button class="btn" data-act="modalClose">닫기</button>`); },
   emailLogin: () => openModal(`<b style="font-size:18px">이메일로 로그인</b><p class="small muted" style="margin:0">메일로 6자리 인증번호를 보내 드려요. 처음이면 자동으로 가입돼요.</p>
-    <form data-form="otp1" class="stack" style="gap:10px"><input class="txt" type="email" id="otpmail" autocomplete="email" placeholder="you@example.com" aria-label="이메일" required><button class="btn primary">인증번호 받기</button></form><button class="btn ghost" data-act="modalClose">취소</button>`),
+    <form data-form="otp1" class="stack" style="gap:10px"><input class="txt" type="email" id="otpmail" autocomplete="email" placeholder="이메일 주소" aria-label="이메일" required><button class="btn primary">인증번호 받기</button></form><button class="btn ghost" data-act="modalClose">취소</button>`),
   syncNow: async () => { toast("동기화 중…"); await Cloud.sync(); render(); toast(Cloud.status || "동기화했어요"); },
   logout: async () => { closeModal(); await Cloud.logout(); LOGIN = { mode: "login", busy: false, err: "", id: "", school: "", q: "", pw: "", pw2: "", ok14: false }; SIGN = { schools: null, err: "" }; render(); toast("로그아웃했어요"); },
   deleteAsk: () => openModal(`<b style="font-size:18px">계정을 삭제할까요?</b><p class="small" style="margin:0">계정과 서버에 저장된 학습 기록이 즉시 영구 삭제돼요. 이 기기에 있는 기록은 남아 있어요(‘기록 모두 지우기’로 따로 지울 수 있어요).</p><div class="row"><button class="btn" data-act="modalClose" style="flex:1">취소</button><button class="btn" data-act="deleteAcct" style="flex:1;color:var(--bad-dk);border-color:var(--bad)">계정 삭제</button></div>`),
