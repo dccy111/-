@@ -1,7 +1,7 @@
 // 빠른 실행·오프라인용 서비스워커
 // 앱 파일은 휴대폰에 저장해 두고 바로 연다(네트워크를 기다리지 않음). 새 버전이 올라오면 이 파일이 바뀌어 뒤에서 새로 받고, 다음 실행(또는 '적용' 버튼)부터 새 버전.
 // 로그인·동기화(Supabase) 요청은 저장하지 않고 항상 네트워크.
-const CACHE = "ptlvl-058d9c3180";
+const CACHE = "ptlvl-129ab3243c";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL.map((u) => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
