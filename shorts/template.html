@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>쇼츠 템플릿</title>
+<link rel="stylesheet" href="pkg-fontsource-jua/index.css">
+<link rel="stylesheet" href="pkg-fontsource-noto-sans-kr/500.css">
+<link rel="stylesheet" href="pkg-fontsource-noto-sans-kr/700.css">
+<link rel="stylesheet" href="pkg-fontsource-noto-sans-kr/900.css">
+<style>
+/* 1080×1920 쇼츠 한 장면. setTime(t)로 그 순간의 화면을 그린다(애니메이션 없이 결정적으로). */
+:root { --green: #14806f; --green-dk: #0d5b4f; --green-soft: #e0f3ee; --gold: #f4b324; --gold-soft: #fff4d8; --gold-ink: #7a5300; --red: #c8232c; --ink: #15191c; --muted: #5d6670; --line: #e2e7e6; --sunk: #f1f4f3 }
+* { box-sizing: border-box; margin: 0 }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #fff }
+body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); position: relative }
+.disp { font-family: "Jua", sans-serif; font-weight: 400 }
+.layer { position: absolute; inset: 0 }
+
+/* 머리 */
+.head { position: absolute; left: 90px; right: 90px; top: 150px; display: flex; align-items: center; gap: 22px }
+.head svg { width: 92px; height: 92px; flex: none }
+.series { font-size: 58px; color: var(--green); line-height: 1 }
+.series small { font-size: 58px; color: var(--ink); margin-left: 10px }
+.badge { position: absolute; left: 90px; top: 280px; display: inline-flex; align-items: center; gap: 14px; padding: 14px 26px; border-radius: 999px; background: var(--gold-soft); color: var(--gold-ink); font-weight: 900; font-size: 38px }
+.badge i { width: 16px; height: 16px; border-radius: 50%; background: var(--gold); display: block }
+.subj { position: absolute; left: 90px; top: 372px; font-size: 36px; font-weight: 700; color: var(--muted) }
+
+/* 문제 카드 */
+.card { position: absolute; left: 90px; right: 90px; top: 450px; height: 470px; border-radius: 48px; background: var(--green); color: #fff; display: grid; place-items: center; padding: 40px 60px; text-align: center }
+.card p { font-size: 92px; line-height: 1.22; word-break: keep-all }
+
+/* 타이머 */
+.timer { position: absolute; left: 50%; top: 975px; width: 250px; height: 250px; margin-left: -125px }
+.timer svg { width: 100%; height: 100%; transform: rotate(-90deg) }
+.timer circle { fill: none; stroke-width: 22 }
+.timer .bg { stroke: var(--sunk) }
+.timer .fg { stroke: var(--green); stroke-linecap: round }
+.timer .n { position: absolute; inset: 0; display: grid; place-items: center; font-size: 128px; line-height: 1; color: var(--ink) }
+.ask { position: absolute; left: 0; right: 0; top: 1250px; text-align: center; font-size: 46px; font-weight: 900 }
+
+/* O / X */
+.ox { position: absolute; left: 130px; top: 1330px; display: flex; gap: 40px }
+.ox div { width: 390px; height: 230px; border-radius: 40px; border: 6px solid var(--line); background: #fff; display: grid; place-items: center; font-size: 190px; line-height: 1 }
+.ox .o { color: var(--green) } .ox .x { color: var(--red) }
+
+/* 댓글 유도 */
+.cta { position: absolute; left: 90px; right: 90px; top: 975px; height: 330px; border-radius: 40px; background: var(--gold-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center }
+.cta b { font-size: 92px; color: var(--ink); line-height: 1.1 }
+.cta span { font-size: 42px; font-weight: 700; color: var(--gold-ink) }
+.arrow { position: absolute; right: 70px; top: 1560px; width: 150px; height: 150px }
+.arrow path { fill: none; stroke: var(--gold); stroke-width: 16; stroke-linecap: round; stroke-linejoin: round }
+
+/* 마무리 */
+.end { background: var(--green); color: #fff; display: flex; flex-direction: column; align-items: center; padding-top: 360px; text-align: center }
+.logo { width: 260px; height: 260px; border-radius: 64px; overflow: hidden; background: var(--green-dk) }
+.logo svg { width: 100%; height: 100%; display: block }
+.end h1 { font-size: 130px; margin-top: 56px; line-height: 1 }
+.end .l1 { font-size: 50px; font-weight: 900; margin-top: 64px }
+.end .l2 { font-size: 50px; font-weight: 900; margin-top: 14px; color: #ffe3a1 }
+.end .pill { margin-top: 84px; padding: 26px 56px; border-radius: 999px; background: #fff; color: var(--green-dk); font-size: 48px; font-weight: 900 }
+.end .fine { position: absolute; bottom: 420px; left: 0; right: 0; font-size: 28px; font-weight: 500; color: #c6efe6 }
+</style></head><body>
+<div class="layer" id="q">
+  <div class="head"><svg viewBox="0 0 62 62" aria-hidden="true"><ellipse cx="31" cy="36" rx="26" ry="23" fill="#14806f"/><rect x="9" y="17" width="44" height="7" rx="3" fill="#f4b324"/><circle cx="23" cy="35" r="3.4" fill="#0b2420"/><circle cx="39" cy="35" r="3.4" fill="#0b2420"/><path d="M25 44 Q31 49 37 44" stroke="#0b2420" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+    <div class="series disp">국시 S급 O/X<small id="ep"></small></div></div>
+  <div class="badge"><i></i><span id="badge"></span></div>
+  <div class="subj" id="subj"></div>
+  <div class="card"><p class="disp" id="question"></p></div>
+  <div class="timer" id="timer"><svg viewBox="0 0 250 250"><circle class="bg" cx="125" cy="125" r="108"/><circle class="fg" id="ring" cx="125" cy="125" r="108"/></svg><div class="n disp" id="num"></div></div>
+  <div class="ask" id="ask">O일까요? X일까요?</div>
+  <div class="ox" id="ox"><div class="o disp">O</div><div class="x disp">X</div></div>
+  <div class="cta" id="cta"><b class="disp">정답은 댓글에서!</b><span>O인지 X인지 먼저 댓글로 남겨 보세요</span></div>
+  <svg class="arrow" id="arrow" viewBox="0 0 150 150" aria-hidden="true"><path d="M20 20 C 70 30, 110 60, 120 120"/><path d="M88 108 L120 124 L134 90"/></svg>
+</div>
+<div class="layer end" id="end">
+  <div class="logo"><svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" fill="#0d5b4f"/><rect x="120" y="330" width="90" height="70" rx="11" fill="#fff"/><rect x="210" y="260" width="90" height="140" rx="11" fill="#fff"/><rect x="300" y="190" width="91" height="210" rx="11" fill="#f4b324"/><path d="M345 95 280 165h130z" fill="#f4b324"/></svg></div>
+  <h1 class="disp">물치 레벨업</h1>
+  <div class="l1">물리치료사 국시 S급 개념 39개</div>
+  <div class="l2">4,600개 이상의 키워드 문제를 게임처럼</div>
+  <div class="pill">프로필 링크에서 무료로</div>
+  <div class="fine">자체 제작 학습 콘텐츠 · 한국보건의료인국가시험원과 무관</div>
+</div>
+<script>
+const EP = {
+  "02": { ep: "#02", badge: "46~53회 8회 연속 출제", subj: "물리치료 기초 · 소화관과 소화샘", q: "쓸개즙은<br>쓸개에서<br>만들어진다." },
+  "03": { ep: "#03", badge: "46~53회 8회 연속 출제", subj: "물리치료 기초 · 다리 근육", q: "큰볼기근은<br>위볼기신경이<br>지배한다." },
+};
+const d = EP[new URLSearchParams(location.search).get("ep") || "02"];
+document.getElementById("ep").textContent = d.ep; document.getElementById("badge").textContent = d.badge;
+document.getElementById("subj").textContent = d.subj; document.getElementById("question").innerHTML = d.q;
+
+// 타이밍(초): 문제 0~2, 카운트다운 2~9(7초), 댓글 유도 9~12, 마무리 12~15
+const T = { count: 2, secs: 7, cta: 9, end: 12, len: 15 };
+const R = 2 * Math.PI * 108; const ring = document.getElementById("ring"); ring.style.strokeDasharray = R;
+const $ = (id) => document.getElementById(id);
+const clamp = (x) => Math.max(0, Math.min(1, x));
+const out = (x) => 1 - Math.pow(1 - clamp(x), 3);              // ease-out
+const set = (id, o, y = 0, s = 1) => { const e = $(id); e.style.opacity = o; e.style.transform = `translateY(${y}px) scale(${s})`; };
+window.setTime = (t) => {
+  // 시작: 카드·버튼이 아래에서 떠오름(마지막 장면에서 첫 장면으로 이어지도록 짧게)
+  const a = out(t / 0.45);
+  set("q", 1); set("end", clamp((t - T.end) / 0.4));
+  $("q").querySelector(".card").style.transform = `translateY(${(1 - a) * 60}px)`; $("q").querySelector(".card").style.opacity = a;
+  // 타이머
+  const left = Math.max(0, T.secs - Math.max(0, t - T.count));    // 남은 초(연속)
+  const n = Math.ceil(left - 1e-6);
+  const urgent = t >= T.count && left <= 3 && left > 0;
+  ring.style.strokeDashoffset = R * (1 - left / T.secs);
+  ring.style.stroke = urgent ? "var(--gold)" : "var(--green)";
+  $("num").textContent = n; $("num").style.color = urgent ? "#b07b08" : "var(--ink)";
+  const frac = (t - T.count) % 1; const pulse = urgent ? 1 + 0.07 * Math.max(0, 1 - frac / 0.25) : 1;
+  const ctaIn = out((t - T.cta) / 0.35);
+  set("timer", (1 - ctaIn) * a, 0, pulse);
+  set("ask", (1 - ctaIn) * a);
+  set("cta", ctaIn, (1 - ctaIn) * 40);
+  const bob = t >= T.cta ? Math.sin((t - T.cta) * Math.PI * 2 / 0.9) * 10 : 0;
+  set("arrow", ctaIn, bob);
+  $("ox").style.opacity = a * (1 - 0.7 * ctaIn); $("ox").style.transform = `translateY(${(1 - a) * 80}px)`;
+};
+window.LEN = T.len; window.TICKS = { ticks: Array.from({ length: T.secs }, (_, i) => T.count + i), ding: T.cta };
+setTime(0);
+</script>
+</body></html>

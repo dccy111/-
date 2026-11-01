@@ -1,0 +1,6 @@
+pkg-*/
+*.tgz
+frames*/
+stills*/
+*.mp4
+sfx.wav
