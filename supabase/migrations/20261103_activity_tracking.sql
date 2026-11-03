@@ -3,7 +3,7 @@
 -- 이용자는 자기 기록을 쓰기만 하고 읽을 수 없다. 읽기는 관리자 함수(admin_*)로만.
 -- 되돌리기: drop function public.admin_user(text); drop function public.admin_stats(integer); drop function public.touch(integer);
 --          drop table public.activity; drop table public.usage_daily; alter table public.profiles drop column last_seen_at;
---          그리고 admin_overview를 20261101 파일의 정의로 되돌린다.
+--          drop function public.admin_users();
 
 alter table public.profiles add column if not exists last_seen_at timestamptz;
 
@@ -58,9 +58,8 @@ end $$;
 revoke execute on function public.touch(integer) from public, anon;
 grant execute on function public.touch(integer) to authenticated;
 
--- 가입자 목록에 마지막 접속과 누적 이용 시간을 더한다(반환 형식이 바뀌어 다시 만든다)
-drop function if exists public.admin_overview();
-create function public.admin_overview()
+-- 가입자 목록 + 마지막 접속·누적 이용 시간. 기존 admin_overview는 지우지 않고 새 함수로 둔다(삭제 확인 없이 적용되도록)
+create or replace function public.admin_users()
 returns table(username text, school text, joined_at timestamptz, synced_at timestamptz, last_study text, xp integer, study_days integer, keywords integer, game_plays integer,
               last_seen_at timestamptz, online boolean, total_secs integer, week_secs integer)
 language plpgsql stable security definer set search_path = '' as $$
@@ -79,8 +78,8 @@ begin
     from public.profiles p left join public.progress g on g.user_id = p.id
     order by p.created_at desc;
 end $$;
-revoke execute on function public.admin_overview() from public, anon;
-grant execute on function public.admin_overview() to authenticated;
+revoke execute on function public.admin_users() from public, anon;
+grant execute on function public.admin_users() to authenticated;
 
 -- 전체 통계: 지금 접속 중, 날짜별 이용자·시간, 활동 종류별, 시간대별
 create or replace function public.admin_stats(p_days integer default 7)
