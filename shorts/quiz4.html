@@ -58,7 +58,7 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); position: rel
 
 .end { background: var(--green); color: #fff; display: flex; flex-direction: column; align-items: center; padding-top: 360px; text-align: center }
 .logo { width: 260px; height: 260px; border-radius: 64px; overflow: hidden }
-.logo svg { width: 100%; height: 100%; display: block }
+.logo img { width: 100%; height: 100%; display: block }
 .end h1 { font-size: 130px; margin-top: 56px; line-height: 1 }
 .end .l1 { font-size: 50px; font-weight: 900; margin-top: 64px }
 .end .l2 { font-size: 50px; font-weight: 900; margin-top: 14px; color: #ffe3a1 }
@@ -67,7 +67,7 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); position: rel
 </style></head><body>
 <div class="layer" id="q">
   <div class="head"><svg viewBox="0 0 62 62" aria-hidden="true"><ellipse cx="31" cy="36" rx="26" ry="23" fill="#14806f"/><rect x="9" y="17" width="44" height="7" rx="3" fill="#f4b324"/><circle cx="23" cy="35" r="3.4" fill="#0b2420"/><circle cx="39" cy="35" r="3.4" fill="#0b2420"/><path d="M25 44 Q31 49 37 44" stroke="#0b2420" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
-    <div class="series disp">국시 S급 O/X</div><div class="dots" id="dots"></div></div>
+    <div class="series disp" id="series">국시 S급 O/X</div><div class="dots" id="dots"></div></div>
   <div class="badge"><i></i><span id="badge"></span></div>
   <div class="subj" id="subj"></div>
   <div class="card" id="card"><span class="qn disp" id="qn"></span><p class="disp" id="question"></p></div>
@@ -79,15 +79,16 @@ body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); position: rel
   <svg class="arrow" id="arrow" viewBox="0 0 150 150" aria-hidden="true"><path d="M20 20 C 70 30, 110 60, 120 120"/><path d="M88 108 L120 124 L134 90"/></svg>
 </div>
 <div class="layer end" id="end">
-  <div class="logo"><svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" fill="#0d5b4f"/><rect x="120" y="330" width="90" height="70" rx="11" fill="#fff"/><rect x="210" y="260" width="90" height="140" rx="11" fill="#fff"/><rect x="300" y="190" width="91" height="210" rx="11" fill="#f4b324"/><path d="M345 95 280 165h130z" fill="#f4b324"/></svg></div>
+  <div class="logo"><img src="logo.png" alt=""></div>
   <h1 class="disp">물치 레벨업</h1>
-  <div class="l1">물리치료사 국시 S급 개념 39개</div>
+  <div class="l1">물리치료사 국시 핵심 개념 211개</div>
   <div class="l2">4,600개 이상의 키워드 문제를 게임처럼</div>
   <div class="pill">프로필 링크에서 무료로</div>
   <div class="fine">자체 제작 학습 콘텐츠 · 한국보건의료인국가시험원과 무관</div>
 </div>
 <script>
 // 문제와 해설은 앱 데이터(S급 개념의 O/X 문항)에서 가져왔다. 마지막 문제의 정답은 영상에 넣지 않는다.
+const $ = (id) => document.getElementById(id);
 const SETS = {
   A: [
     { badge: "46~53회 8회 연속 출제", subj: "물리치료 기초 · 소화관과 소화샘", q: "쓸개즙은<br>쓸개에서<br>만들어진다.", a: false, why: "간에서 만들고, 쓸개는<br>저장·농축만 해요" },
@@ -95,21 +96,42 @@ const SETS = {
     { badge: "47~53회 중 6회 출제", subj: "물리치료 진단평가 · 신경계 기능 척도", q: "버그균형척도는<br>56점 만점이다.", a: true, why: "14항목 × 4점 = 56점<br>높을수록 균형이 좋아요" },
     { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 의료인 면허·의무", q: "물리치료사는<br>의료법상<br>의료인이다.", a: null },
   ],
+  // 1주차: 월 S급 O/X · 수 헷갈리는 짝 · 금 과목 도장깨기 (문제·해설은 앱 데이터의 S급 개념 O/X 문항)
+  B: { title: "국시 S급 O/X", qs: [
+    { badge: "46~53회 8회 연속 출제", subj: "물리치료 기초 · 다리 근육", q: "가자미근은<br>무릎과 발목을<br>모두 지난다.", a: false, why: "가자미근은 발목만 지나요<br>두 관절은 장딴지근" },
+    { badge: "47~53회 7회 연속 출제", subj: "물리치료 기초 · 팔 근육", q: "위팔노근은<br>노신경 지배지만<br>팔꿉을 굽힌다.", a: true, why: "노신경 지배 근육 중<br>대표적인 예외예요" },
+    { badge: "47~53회 중 6회 출제", subj: "진단평가 · 글래스고 혼수척도", q: "GCS의<br>최저점은<br>0점이다.", a: false, why: "최저 3점, 최고 15점<br>8점 이하는 중증이에요" },
+    { badge: "47~53회 중 6회 출제", subj: "물리치료 중재 · 관절염", q: "헤베르덴 결절은<br>몸쪽 손가락<br>관절에 생긴다.", a: null },
+  ] },
+  C: { title: "헷갈리는 짝 O/X", qs: [
+    { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 노인 주거 vs 의료 시설", q: "노인요양<br>공동생활가정은<br>주거복지시설이다.", a: false, why: "'요양'이 붙으면<br>노인의료복지시설이에요" },
+    { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 노인 주거 vs 의료 시설", q: "노인공동<br>생활가정은<br>주거복지시설이다.", a: true, why: "양로시설·노인복지주택과<br>같은 주거복지시설" },
+    { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 노인 주거 vs 여가 시설", q: "노인복지주택은<br>여가복지시설이다.", a: false, why: "노인복지주택은<br>주거복지시설이에요" },
+    { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 노인 주거 vs 의료 시설", q: "노인요양시설은<br>의료복지시설이다.", a: null },
+  ] },
+  D: { title: "의료법규 4문제", qs: [
+    { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 의료인의 의무", q: "진료기록부는<br>10년간<br>보존한다.", a: true, why: "진료기록부는 10년<br>처방전은 2년이에요" },
+    { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 의료기사의 종류", q: "안경사는<br>의료기사 6종에<br>포함된다.", a: false, why: "안경사는 '의료기사등'에만<br>들어가요" },
+    { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 노인복지법", q: "노인실태조사는<br>매년<br>실시한다.", a: false, why: "보건복지부장관이<br>3년마다 실시해요" },
+    { badge: "47~53회 중 6회 출제", subj: "의료관계법규 · 노인복지법", q: "경로우대 대상은<br>70세 이상이다.", a: null },
+  ] },
 };
-const QS = SETS[new URLSearchParams(location.search).get("set") || "A"];
+const SET = SETS[new URLSearchParams(location.search).get("set") || "A"];
+const QS = Array.isArray(SET) ? SET : SET.qs; if (SET.title) $("series").textContent = SET.title;
 // 타이밍(초): 문제마다 읽기 1.5 → 타이머 5 → 공개 3 (마지막은 공개 대신 댓글 유도 3), 끝에 마무리 3
 const READ = 1.5, SECS = 5, SHOW = 3, END = 3;
 const SEG = READ + SECS + SHOW;
 const LEN = SEG * QS.length + END;
-const $ = (id) => document.getElementById(id);
 const clamp = (x) => Math.max(0, Math.min(1, x));
 const out = (x) => 1 - Math.pow(1 - clamp(x), 3);
 const R = 2 * Math.PI * 108; $("ring").style.strokeDasharray = R;
 const fx = (id, o, y = 0, s = 1, x = 0) => { const e = $(id); e.style.opacity = o; e.style.transform = `translate(${x}px, ${y}px) scale(${s})`; };
 let shown = -1;
+function fit(el, max, min) { el.style.fontSize = max + "px"; const box = el.parentElement;
+  for (let f = max; f >= min; f -= 2) { el.style.fontSize = f + "px"; if (el.scrollWidth <= el.clientWidth + 1 && box.scrollHeight <= box.clientHeight + 1) break; } }
 function load(i) {
   const d = QS[i]; shown = i;
-  $("badge").textContent = d.badge; $("subj").textContent = d.subj; $("question").innerHTML = d.q; $("qn").textContent = `Q${i + 1}`;
+  $("badge").textContent = d.badge; $("subj").textContent = d.subj; $("question").innerHTML = d.q; fit($("question"), 88, 62); $("qn").textContent = `Q${i + 1}`;
   $("dots").innerHTML = QS.map((_, k) => `<i class="${k < i ? "done" : k === i ? "now" : ""}"></i>`).join("");
   if (d.a !== null) { $("ans").className = "ans " + (d.a ? "o" : "x"); $("ansH").textContent = `정답 ${d.a ? "O" : "X"}`; $("ansT").innerHTML = d.why; }
 }
