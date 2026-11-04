@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>물치 파일럿 1 · 12일 연속이었는데</title>
+<link rel="stylesheet" href="pkg-fontsource-jua/index.css">
+<link rel="stylesheet" href="pkg-fontsource-noto-sans-kr/700.css">
+<link rel="stylesheet" href="pkg-fontsource-noto-sans-kr/900.css">
+<style>
+/* 1080×1920, 10초. 자막만. setTime(t)로 그 순간을 그린다. 주인공: 앱 마스코트 '물치' */
+* { box-sizing: border-box; margin: 0 }
+html, body { width: 1080px; height: 1920px; overflow: hidden; font-family: "Noto Sans KR", sans-serif }
+body { background: #10202a; position: relative }
+.disp { font-family: "Jua", sans-serif; font-weight: 400 }
+#room { position: absolute; inset: 0; background: radial-gradient(120% 70% at 50% 85%, #2a4a5c 0%, #142833 55%, #0b171e 100%) }
+#lamp { position: absolute; left: -200px; top: -200px; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(255,214,140,.22), rgba(255,214,140,0) 65%) }
+#blanket { position: absolute; left: -60px; right: -60px; bottom: -40px; height: 520px; border-radius: 260px 260px 0 0; background: linear-gradient(#3d6b7d, #2b5163) }
+#blanket::after { content: ""; position: absolute; left: 0; right: 0; top: 70px; height: 22px; background: rgba(255,255,255,.08) }
+
+/* 휴대폰 + 손 */
+#phoneWrap { position: absolute; left: 270px; top: 520px; width: 540px; height: 1110px; transform-origin: 50% 100% }
+#phone { position: absolute; inset: 0; border-radius: 66px; background: #0a0f12; border: 16px solid #1d262b; overflow: hidden; box-shadow: 0 0 120px rgba(120,200,255,.25) }
+#feed { position: absolute; left: 0; right: 0; top: 0 }
+.tile { height: 360px; margin: 14px; border-radius: 28px; display: grid; place-items: center; font-family: "Jua"; font-size: 64px; color: rgba(255,255,255,.9) }
+#lesson { position: absolute; inset: 0; background: #fff url(pilot-lesson.png) top center / 100% auto no-repeat; opacity: 0 }
+#hand { position: absolute; left: 180px; top: 1400px; width: 720px; height: 520px }
+/* 물치 */
+#mul { position: absolute; left: 0; top: 0; width: 520px; height: 520px; transform-origin: 50% 60% }
+#mul svg { width: 100%; height: 100%; overflow: visible }
+/* 자막 */
+.cap { position: absolute; left: 60px; right: 60px; top: 150px; text-align: center; font-family: "Jua"; font-size: 92px; line-height: 1.2; color: #fff;
+  paint-order: stroke; -webkit-text-stroke: 14px #0b171e; word-break: keep-all; opacity: 0 }
+.cap small { display: block; font-size: 52px; margin-top: 18px; color: #ffe3a1 }
+#streak { position: absolute; left: 50%; top: 396px; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; padding: 16px 30px; border-radius: 999px; background: rgba(0,0,0,.45); color: #ffd36a; font-family: "Jua"; font-size: 56px; opacity: 0 }
+#flash { position: absolute; inset: 0; background: #fff; opacity: 0 }
+#logo { position: absolute; left: 50%; bottom: 70px; transform: translateX(-50%); padding: 18px 40px 18px 22px; border-radius: 999px; background: rgba(11,23,30,.78); display: flex; justify-content: center; align-items: center; gap: 22px; opacity: 0 }
+#logo img { width: 120px; height: 120px; border-radius: 30px }
+#logo b { font-family: "Jua"; font-weight: 400; font-size: 72px; color: #fff; paint-order: stroke; -webkit-text-stroke: 10px #0b171e }
+</style></head><body>
+<div id="room"><div id="lamp"></div><div id="blanket"></div></div>
+<div id="phoneWrap"><div id="phone"><div id="feed"></div><div id="lesson"></div></div></div>
+<svg id="hand" viewBox="0 0 720 520"><path d="M120 520 C 120 380, 170 300, 260 260 L 330 230 C 360 220, 380 250, 360 275 L 320 320 L 560 300 C 600 298, 610 340, 575 350 L 420 380 L 600 390 C 640 393, 640 440, 600 442 L 420 448 L 560 470 C 590 476, 585 510, 560 512 L 300 520 Z" fill="#f2c9a5" stroke="#d9a982" stroke-width="6"/></svg>
+<div id="mul"><svg viewBox="0 0 62 62">
+  <ellipse cx="31" cy="36" rx="26" ry="23" fill="#14806f"/>
+  <ellipse cx="22" cy="27" rx="9" ry="5" fill="#2aa38f" opacity=".6"/>
+  <rect id="band" x="9" y="17" width="44" height="7" rx="3" fill="#f4b324"/>
+  <circle id="glint" cx="47" cy="19" r="0" fill="#fff"/>
+  <g id="eyesN"><circle cx="23" cy="35" r="3.4" fill="#0b2420"/><circle cx="39" cy="35" r="3.4" fill="#0b2420"/></g>
+  <g id="eyesG" opacity="0"><circle cx="23" cy="35" r="4.2" fill="#fff"/><circle cx="39" cy="35" r="4.2" fill="#fff"/><circle cx="23.6" cy="35.4" r="2" fill="#0b2420"/><circle cx="39.6" cy="35.4" r="2" fill="#0b2420"/></g>
+  <g id="eyesS" opacity="0"><path d="M19 36 Q23 32 27 36" stroke="#0b2420" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M35 36 Q39 32 43 36" stroke="#0b2420" stroke-width="2.6" fill="none" stroke-linecap="round"/></g>
+  <g id="eyesH" opacity="0"><path d="M19 35 L23 31 L27 35" stroke="#0b2420" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M35 35 L39 31 L43 35" stroke="#0b2420" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <path id="mouthN" d="M25 44 Q31 49 37 44" stroke="#0b2420" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path id="mouthS" d="M25 47 Q28 44 31 47 Q34 44 37 47" stroke="#0b2420" stroke-width="2.6" fill="none" stroke-linecap="round" opacity="0"/>
+  <path id="mouthO" d="M27 45 Q31 41 35 45 Q31 49 27 45 Z" fill="#0b2420" opacity="0"/>
+  <ellipse cx="16" cy="42" rx="3.4" ry="2" fill="#f28c8c" opacity=".55"/><ellipse cx="46" cy="42" rx="3.4" ry="2" fill="#f28c8c" opacity=".55"/>
+  <g id="tears" opacity="0"><path id="t1" d="M21 39 q-2 5 0 8 q2 -3 0 -8z" fill="#8fd3ff"/><path id="t2" d="M41 39 q-2 5 0 8 q2 -3 0 -8z" fill="#8fd3ff"/></g>
+</svg></div>
+<div id="streak"><svg width="52" height="60" viewBox="0 0 26 30"><path d="M13 1 C 16 8, 24 11, 22 20 C 21 26, 17 29, 13 29 C 8 29, 4 26, 4 20 C 4 14, 9 13, 9 7 C 11 9, 12 10, 13 1 Z" fill="#f4b324"/><path d="M13 14 C 15 18, 18 19, 17 23 C 16 26, 14 27, 13 27 C 10 27, 9 25, 9 23 C 9 20, 12 19, 13 14 Z" fill="#ff7a2f"/></svg><span id="sk">12일 연속</span></div>
+<div class="cap" id="c1">오늘은 좀<br>쉬어도 되겠지?</div>
+<div class="cap" id="c2">…12일 연속<br>이었잖아</div>
+<div class="cap" id="c3">가자미근이<br>몇 관절 지나는지<br>말해 봐</div>
+<div class="cap" id="c4">…네<br>레슨 할게요</div>
+<div id="flash"></div>
+<div id="logo"><img src="logo.png" alt=""><b>물치 레벨업</b></div>
+<script>
+const $ = (id) => document.getElementById(id);
+const clamp = (x) => Math.max(0, Math.min(1, x)); const out = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const inout = (x) => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const back = (x) => { x = clamp(x); const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+// 피드 타일
+const T = [["#ff6b6b", "ㅋㅋㅋㅋ"], ["#845ef7", "냥냥펀치"], ["#20c997", "먹방 7탄"], ["#fab005", "ㅋㅋㅋㅋㅋ"], ["#4dabf7", "브이로그"], ["#f06595", "챌린지"], ["#94d82d", "ㅋㅋ"], ["#ff922b", "레전드"]];
+$("feed").innerHTML = T.concat(T).map(([c, t]) => `<div class="tile" style="background:${c}">${t}</div>`).join("");
+const LEN = 10.4;
+const face = (k) => { for (const e of ["N", "G", "S", "H"]) $("eyes" + e).style.opacity = e === k ? 1 : 0;
+  $("mouthN").style.opacity = k === "N" || k === "H" ? 1 : 0; $("mouthS").style.opacity = k === "S" ? 1 : 0; $("mouthO").style.opacity = k === "G" ? 1 : 0; };
+const cap = (id, a, b, t) => { const v = clamp((t - a) / 0.25) * (1 - clamp((t - b) / 0.2)); const e = $(id); e.style.opacity = v; e.style.transform = `translateY(${(1 - out((t - a) / 0.3)) * 40}px) scale(${0.92 + 0.08 * out((t - a) / 0.3)})`; };
+window.setTime = (t) => {
+  // 피드 스크롤(넘길 때마다 툭툭), 2초부터 멈춤
+  const flicks = Math.min(t, 2.2) / 0.55; const k = Math.floor(flicks), f = flicks - k; const y = (k + out(f / 0.45)) * 374; $("feed").style.transform = `translateY(${-y}px)`;
+  cap("c1", 0.1, 2.0, t); cap("c2", 2.4, 5.0, t); cap("c3", 5.2, 8.0, t); cap("c4", 8.35, 99, t);
+  // 휴대폰: 5초 충격으로 흔들림, 8초에 벌떡(위로 들림)
+  const shake = t > 5.05 && t < 5.6 ? Math.sin(t * 90) * 18 * (1 - (t - 5.05) / 0.55) : 0;
+  const up = out((t - 8.0) / 0.35); $("phoneWrap").style.transform = `translate(${shake}px, ${-up * 30}px) rotate(${shake * 0.08}deg) scale(${1 + up * 0.05})`;
+  $("hand").style.transform = `translate(${shake}px, ${-up * 30}px)`;
+  $("lesson").style.opacity = clamp((t - 8.15) / 0.15);
+  $("flash").style.opacity = t > 8.0 && t < 8.4 ? 0.85 * (1 - (t - 8.0) / 0.4) : 0;
+  // 물치: 2.2~4.8 오른쪽 아래에서 슬금슬금 / 5.0~8.0 화면에 철썩 붙어 울기 / 8.3~ 작게 환호
+  const M = $("mul"); let x, y2, s, r = 0, sq = 1;
+  if (t < 2.2) { x = 760; y2 = 2400; s = 0.9; face("N"); }
+  else if (t < 5.0) { const u = inout((t - 2.2) / 2.2); x = 720; y2 = 2250 - u * 920; s = 0.9; r = -12 + Math.sin(t * 3) * 3; face("G"); }
+  else if (t < 8.0) { const u = back((t - 5.0) / 0.35); x = 720 - u * 180; y2 = 1330 - u * 340; s = 0.9 + u * 0.95; face("S");
+    sq = t < 5.45 ? 1 + 0.12 * Math.sin((t - 5.0) / 0.45 * Math.PI) : 1 + 0.02 * Math.sin(t * 10); r = Math.sin(t * 7) * 2; }
+  else { const u = out((t - 8.3) / 0.4); x = 820; y2 = 1500 - u * 40 + Math.sin(t * 9) * 8; s = 0.55; face("H"); r = 8; }
+  if (t >= 8.0 && t < 8.3) { x = 820; y2 = 2100; s = 0.55; }
+  M.style.transform = `translate(${x - 260}px, ${y2 - 260}px) rotate(${r}deg) scale(${s * sq}, ${s / sq})`;
+  $("tears").style.opacity = t >= 5.2 && t < 8.0 ? 1 : 0;
+  const ty = ((t * 1.6) % 1) * 10; $("t1").setAttribute("transform", `translate(0 ${ty})`); $("t2").setAttribute("transform", `translate(0 ${((t * 1.6 + 0.5) % 1) * 10})`);
+  // 머리띠 반짝(등장 순간), 분노 직전 붉게
+  const g = t > 3.0 && t < 3.6 ? Math.sin((t - 3.0) / 0.6 * Math.PI) : 0; $("glint").setAttribute("r", 3.2 * g);
+  $("band").setAttribute("fill", t > 4.4 && t < 5.2 ? "#ff5a3c" : "#f4b324");
+  // 연속 학습 배지: 2.6~5 깜빡이며 등장, 8.4~ 다시 밝게
+  $("streak").style.opacity = t > 2.6 && t < 5.0 ? 0.6 + 0.4 * Math.sin(t * 8) : t > 8.5 ? clamp((t - 8.5) / 0.3) : 0;
+  $("logo").style.opacity = clamp((t - 9.0) / 0.3);
+  $("sk").textContent = t > 8.9 ? "13일 연속!" : "12일 연속"; $("streak").style.transform = `translateX(-50%) scale(${t > 8.9 && t < 9.3 ? 1 + 0.25 * Math.sin((t - 8.9) / 0.4 * Math.PI) : 1})`;
+};
+window.LEN = LEN;
+// 효과음 위치(sfx 생성용)
+window.CUES = { flick: [0.55, 1.1, 1.65, 2.2], creep: 2.3, glint: 3.0, slam: 5.05, sob: 5.4, flash: 8.0, yay: 8.35 };
+setTime(0);
+</script>
+</body></html>
