@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>쇼츠 4지선다형</title>
+<link rel="stylesheet" href="pkg-fontsource-jua/index.css">
+<link rel="stylesheet" href="pkg-fontsource-noto-sans-kr/500.css">
+<link rel="stylesheet" href="pkg-fontsource-noto-sans-kr/700.css">
+<link rel="stylesheet" href="pkg-fontsource-noto-sans-kr/900.css">
+<style>
+/* 1080×1920, 4지선다 4문제: 1~3번 타이머 뒤 정답·해설, 마지막은 "정답은 댓글에서". 문항은 앱 '특수검사 퀴즈' 데이터(보기는 같은 부위 검사). */
+:root { --green: #14806f; --green-dk: #0d5b4f; --green-soft: #e0f3ee; --gold: #f4b324; --gold-soft: #fff4d8; --gold-ink: #7a5300; --red: #c8232c; --ink: #15191c; --muted: #5d6670; --line: #e2e7e6; --sunk: #f1f4f3 }
+* { box-sizing: border-box; margin: 0 }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #fff }
+body { font-family: "Noto Sans KR", sans-serif; color: var(--ink); position: relative }
+.disp { font-family: "Jua", sans-serif; font-weight: 400 }
+.layer { position: absolute; inset: 0 }
+.head { position: absolute; left: 80px; right: 80px; top: 130px; display: flex; align-items: center; gap: 22px }
+.head svg { width: 92px; height: 92px; flex: none }
+.series { font-size: 58px; color: var(--green); line-height: 1 }
+.dots { margin-left: auto; display: flex; gap: 12px }
+.dots i { width: 26px; height: 26px; border-radius: 50%; background: var(--sunk); display: block }
+.dots i.done { background: var(--green) } .dots i.now { background: var(--gold) }
+.badge { position: absolute; left: 80px; top: 252px; display: inline-flex; align-items: center; gap: 14px; padding: 12px 26px; border-radius: 999px; background: var(--gold-soft); color: var(--gold-ink); font-weight: 900; font-size: 38px }
+.badge i { width: 16px; height: 16px; border-radius: 50%; background: var(--gold); display: block }
+.card { position: absolute; left: 80px; right: 80px; top: 340px; height: 470px; border-radius: 44px; background: var(--green); color: #fff; padding: 46px 52px; display: flex; flex-direction: column; gap: 22px }
+.card .qh { font-size: 52px; display: flex; gap: 18px; align-items: baseline }
+.card .qh span { color: #c6efe6 }
+.card .ln { font-size: 44px; font-weight: 700; line-height: 1.38; word-break: keep-all }
+.card .ln b { display: inline-block; min-width: 96px; margin-right: 12px; padding: 2px 14px; border-radius: 12px; background: rgba(255,255,255,.18); font-size: 36px; font-weight: 900; text-align: center; vertical-align: 4px }
+.timer { position: absolute; left: 50%; top: 838px; width: 190px; height: 190px; margin-left: -95px }
+.timer svg { width: 100%; height: 100%; transform: rotate(-90deg) }
+.timer circle { fill: none; stroke-width: 18 }
+.timer .bg { stroke: var(--sunk) } .timer .fg { stroke: var(--green); stroke-linecap: round }
+.timer .n { position: absolute; inset: 0; display: grid; place-items: center; font-size: 100px; line-height: 1 }
+.ans { position: absolute; left: 80px; right: 80px; top: 838px; height: 196px; border-radius: 36px; background: var(--green-soft); padding: 0 46px; display: flex; flex-direction: column; justify-content: center; gap: 8px }
+.ans b { font-size: 62px; color: var(--green-dk); line-height: 1.1 } .ans span { font-size: 38px; font-weight: 700; line-height: 1.35; word-break: keep-all }
+.cta { position: absolute; left: 80px; right: 80px; top: 838px; height: 196px; border-radius: 36px; background: var(--gold-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px }
+.cta b { font-size: 76px; line-height: 1.1 } .cta span { font-size: 38px; font-weight: 700; color: var(--gold-ink) }
+.opts { position: absolute; left: 80px; right: 80px; top: 1062px; display: flex; flex-direction: column; gap: 18px }
+.opt { height: 112px; border-radius: 30px; border: 5px solid var(--line); background: #fff; display: flex; align-items: center; gap: 26px; padding: 0 30px; font-size: 50px; font-weight: 900 }
+.opt i { width: 64px; height: 64px; border-radius: 50%; background: var(--sunk); display: grid; place-items: center; font-style: normal; font-size: 38px; color: var(--muted); flex: none }
+.opt.win { background: var(--green); border-color: var(--green); color: #fff } .opt.win i { background: #fff; color: var(--green) }
+.opt.lose { opacity: .28 }
+.end { background: var(--green); color: #fff; display: flex; flex-direction: column; align-items: center; padding-top: 330px; text-align: center }
+.end img { width: 260px; height: 260px; border-radius: 64px; box-shadow: 0 20px 60px rgba(0,0,0,.25) }
+.end h1 { font-size: 130px; margin-top: 56px; line-height: 1 }
+.end .l1 { font-size: 54px; font-weight: 900; margin-top: 60px }
+.end .l2 { font-size: 46px; font-weight: 900; margin-top: 16px; color: #ffe3a1 }
+.end .pill { margin-top: 80px; padding: 26px 56px; border-radius: 999px; background: #fff; color: var(--green-dk); font-size: 48px; font-weight: 900 }
+.end .fine { position: absolute; bottom: 380px; left: 0; right: 0; font-size: 28px; font-weight: 500; color: #c6efe6 }
+</style></head><body>
+<div class="layer" id="q">
+  <div class="head"><svg viewBox="0 0 62 62" aria-hidden="true"><ellipse cx="31" cy="36" rx="26" ry="23" fill="#14806f"/><rect x="9" y="17" width="44" height="7" rx="3" fill="#f4b324"/><circle cx="23" cy="35" r="3.4" fill="#0b2420"/><circle cx="39" cy="35" r="3.4" fill="#0b2420"/><path d="M25 44 Q31 49 37 44" stroke="#0b2420" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+    <div class="series disp" id="series"></div><div class="dots" id="dots"></div></div>
+  <div class="badge"><i></i><span id="badge"></span></div>
+  <div class="card" id="card"><div class="qh disp"><span id="qn"></span>이 검사의 이름은?</div><div class="ln" id="l1"></div><div class="ln" id="l2"></div></div>
+  <div class="timer" id="timer"><svg viewBox="0 0 190 190"><circle class="bg" cx="95" cy="95" r="80"/><circle class="fg" id="ring" cx="95" cy="95" r="80"/></svg><div class="n disp" id="num"></div></div>
+  <div class="ans" id="ans"><b class="disp" id="ansH"></b><span id="ansT"></span></div>
+  <div class="cta" id="cta"><b class="disp">정답은 댓글에서!</b><span>먼저 댓글로 번호를 남겨 보세요</span></div>
+  <div class="opts" id="opts"></div>
+</div>
+<div class="layer end" id="end">
+  <img src="logo.png" alt="">
+  <h1 class="disp">물치 레벨업</h1>
+  <div class="l1" id="endL1"></div>
+  <div class="l2" id="endL2"></div>
+  <div class="pill">프로필 링크에서 무료로</div>
+  <div class="fine">자체 제작 학습 콘텐츠 · 한국보건의료인국가시험원과 무관</div>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+const SETS = {
+  T1: { title: "특수검사 퀴즈", end: ["특수검사 61개, 퀴즈로 끝내기", "방법·양성 소견·확인하는 것까지"], qs: [
+    { badge: "부위 · 어깨", m: "어깨뼈를 누른 채 안쪽돌림한 팔을 앞으로 끝까지 들어 올린다", p: "어깨 앞쪽·위쪽 통증", a: "니어 검사", ch: ["오브라이언 검사", "니어 검사", "스피드 검사", "불안 검사(어깨)"], why: "어깨 충돌증후군 검사<br>안쪽돌림한 팔을 끝까지 굽힘" },
+    { badge: "부위 · 손목", m: "양 손등을 맞대 손목을 최대로 굽힌 채 약 1분 유지한다", p: "엄지~넷째 손가락 가쪽 저림", a: "팔렌 검사", ch: ["티넬 징후", "핀켈스타인 검사", "프로망 징후", "팔렌 검사"], why: "손목굴증후군(정중신경)<br>티넬 징후는 두드리는 검사" },
+    { badge: "부위 · 무릎", m: "무릎을 20~30° 굽히고 정강뼈를 앞으로 당긴다", p: "정강뼈가 앞으로 많이 밀리고 끝느낌이 물렁하다", a: "라크만 검사", ch: ["뒤당김 검사", "라크만 검사", "맥머리 검사", "중심축 이동 검사"], why: "앞십자인대(ACL) 손상<br>ACL에 가장 민감한 검사" },
+    { badge: "부위 · 엉덩관절", m: "누운 자세에서 반대쪽 무릎을 가슴에 붙이고 검사쪽 다리는 펴 둔다", p: "검사쪽 넙다리가 바닥에서 들린다", a: "토마스 검사", ch: ["엘라이 검사", "오버 검사", "토마스 검사", "트렌델렌부르크 검사"], last: true },
+  ] },
+};
+const SET = SETS[new URLSearchParams(location.search).get("set") || "T1"]; const QS = SET.qs;
+$("series").textContent = SET.title; $("endL1").textContent = SET.end[0]; $("endL2").textContent = SET.end[1];
+const READ = 2.5, SECS = 5, SHOW = 3, END = 3.2, SEG = READ + SECS + SHOW, LEN = SEG * QS.length + END;
+const clamp = (x) => Math.max(0, Math.min(1, x)); const out = (x) => 1 - Math.pow(1 - clamp(x), 3);
+const R = 2 * Math.PI * 80; $("ring").style.strokeDasharray = R;
+const fx = (id, o, y = 0, s = 1, x = 0) => { const e = $(id); e.style.opacity = o; e.style.transform = `translate(${x}px, ${y}px) scale(${s})`; };
+let shown = -1;
+function load(i) { const d = QS[i]; shown = i;
+  $("badge").textContent = d.badge; $("qn").textContent = `Q${i + 1}`;
+  $("l1").innerHTML = `<b>방법</b>${d.m}`; $("l2").innerHTML = `<b>양성</b>${d.p}`;
+  $("dots").innerHTML = QS.map((_, k) => `<i class="${k < i ? "done" : k === i ? "now" : ""}"></i>`).join("");
+  $("opts").innerHTML = d.ch.map((o, k) => `<div class="opt" data-o="${o}"><i>${k + 1}</i>${o}</div>`).join("");
+  if (!d.last) { const k = d.ch.indexOf(d.a) + 1; $("ansH").textContent = `정답 ${k}번 · ${d.a}`; $("ansT").innerHTML = d.why; }
+  // 긴 설명은 카드 안에 들어가게 줄임
+  for (let f = 44; f >= 34; f -= 2) { $("l1").style.fontSize = $("l2").style.fontSize = f + "px"; if ($("card").scrollHeight <= $("card").clientHeight + 1) break; } }
+window.setTime = (t) => {
+  $("end").style.opacity = clamp((t - SEG * QS.length) / 0.4);
+  const i = Math.min(QS.length - 1, Math.floor(t / SEG)); if (i !== shown) load(i);
+  const d = QS[i], u = t - i * SEG, inA = out(u / 0.35);
+  ["card", "badge"].forEach((id) => fx(id, inA, 0, 1, (1 - inA) * 140));
+  [...document.querySelectorAll(".opt")].forEach((e, k) => { const a = out((u - 0.25 - k * 0.08) / 0.3); e.style.opacity = a; e.style.transform = `translateX(${(1 - a) * 120}px)`; });
+  const left = Math.max(0, SECS - Math.max(0, u - READ)); const n = Math.ceil(left - 1e-6); const urgent = u >= READ && left <= 3 && left > 0;
+  $("ring").style.strokeDashoffset = R * (1 - left / SECS); $("ring").style.stroke = urgent ? "var(--gold)" : "var(--green)";
+  $("num").textContent = n; $("num").style.color = urgent ? "#b07b08" : "var(--ink)";
+  const pulse = urgent ? 1 + 0.07 * Math.max(0, 1 - ((u - READ) % 1) / 0.25) : 1;
+  const rev = out((u - READ - SECS) / 0.3);
+  fx("timer", inA * (1 - rev), 0, pulse); fx("ans", d.last ? 0 : rev, (1 - rev) * 30); fx("cta", d.last ? rev : 0, (1 - rev) * 30);
+  if (rev > 0.5) document.querySelectorAll(".opt").forEach((e) => { e.className = "opt " + (d.last ? "" : e.dataset.o === d.a ? "win" : "lose"); });
+};
+window.LEN = LEN;
+window.CUES = { ticks: QS.flatMap((_, i) => Array.from({ length: SECS }, (_, k) => ({ t: i * SEG + READ + k, urgent: k >= SECS - 3 }))), reveal: QS.map((d, i) => ({ t: i * SEG + READ + SECS, last: !!d.last })) };
+setTime(0);
+</script>
+</body></html>
