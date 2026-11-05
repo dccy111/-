@@ -2,15 +2,38 @@
 import json, re
 F = '/home/user/-/mulchi-web/index.html'
 H = open(F, encoding='utf-8').read()
-ch = json.load(open('summary/build/u14.json'))
-PARTS = [("뇌", [(1, ["c434"]), (2, ["c435"]), (3, ["c436"]), (4, ["c453", "c454", "c455", "c456"]), (5, ["c452"])]),
-         ("바닥핵과 소뇌", [(6, ["c446"]), (7, ["c447"])]),
-         ("척수", [(8, ["c441"]), (9, ["c439"])]),
-         ("말초신경", [(10, ["c443"]), (11, ["c444"])]),
-         ("신경근육 질환과 소아", [(12, ["c449"]), (13, ["c450", "c448"]), (14, ["c460"])])]
-by = {c['n']: c for c in ch}
-def rounds(f): return 4 if '모두' in f else len(re.findall(r'5\d', f.split('출제')[0]))
-units = {"14": {"parts": [{"name": p, "ch": [{"id": f"u14c{n:02d}", "no": n, "title": by[n]['title'], "freq": by[n]['freq'], "r": rounds(by[n]['freq']), "sids": s, "body": by[n]['body']} for n, s in lst]} for p, lst in PARTS]}}
+import glob, html as _h
+D0 = json.loads(re.search(r'<script id="data" type="application/json">(.*?)</script>', H, re.S).group(1))
+SK0 = {x['id']: x for x in D0['skills']}
+PL = lambda t: _h.escape(re.sub(r'[*=]', '', str(t or '')))
+def exams(sids):
+    ex = {}
+    for sid in sids:
+        for it in SK0[sid]['items']:
+            m = re.search(r':xf(\d+)_(\d+)_(\d+)$', it['id'])
+            if m: ex[m.group(0)] = (int(m.group(1)), it)
+    return list(ex.values())
+units = {}
+for f in sorted(glob.glob('summary/build/specs/u*.json')):
+    u = re.search(r'u(\d+)\.json$', f).group(1); sp = json.load(open(f)); n = 0; parts = []
+    for p in sp['parts']:
+        lst = []
+        for c in p['ch']:
+            n += 1; ex = exams(c['sids']); rs = sorted({r for r, _ in ex})
+            freq = (f"{'·'.join(map(str, rs))}회 {'모두 ' if len(rs) == 4 else ''}출제 · {len(ex)}문항") if ex else "기출 없음 · 기본 개념"
+            body = c['body']
+            if ex and 'class="exam"' not in body:
+                pick = []; seen = set()
+                for r, it in sorted(ex, key=lambda x: -x[0]):
+                    if any(it['id'].endswith(':' + k) for k in c.get('skip', [])): continue
+                    k = PL(it['f']);
+                    if k in seen: continue
+                    seen.add(k); pick.append(f"<li>{k} → {PL(it['b'])}</li>")
+                    if len(pick) == 4: break
+                body += f'<div class="exam"><b>시험에서는</b><ul>{"".join(pick)}</ul></div>'
+            lst.append({"id": f"u{u}c{n:02d}", "no": n, "title": c['title'], "freq": freq, "r": len(rs), "sids": c['sids'], "body": body})
+        parts.append({"name": p['name'], "ch": lst})
+    units[u] = {"parts": parts}
 blob = json.dumps({"units": units}, ensure_ascii=False).replace('</', '<\\/')
 block = f'<script id="sumdata" type="application/json">{blob}</script>\n'
 H = re.sub(r'<script id="sumdata" type="application/json">.*?</script>\n', '', H, flags=re.S)
