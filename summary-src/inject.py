@@ -69,6 +69,13 @@ nav.tabs .in { grid-template-columns: repeat(5, 1fr) }
 .sumbody .remember b { display: block; font-size: 12px; color: var(--accent-dk); letter-spacing: .06em }
 .sumbody .exam { background: var(--gold-soft); border-radius: 14px; padding: 12px 14px; font-family: var(--f-body); font-size: 14.5px; line-height: 1.7; display: flex; flex-direction: column; gap: 4px }
 .sumbody .exam b { color: var(--gold-ink); font-size: 12px; letter-spacing: .06em } .sumbody .exam ul { margin: 0; padding-left: 18px }
+.sumpdf { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; text-decoration: none; color: var(--ink); border-color: var(--gold-soft); background: linear-gradient(180deg, var(--surface), var(--gold-soft)) }
+.sumpdf .ic { display: grid; place-items: center; width: 42px; height: 50px; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 900; font-size: 12px; letter-spacing: .04em }
+.sumpdf .tx { display: flex; flex-direction: column; gap: 2px; min-width: 0 }
+.sumpdf .tx b { font-size: 15px; word-break: keep-all }
+.sumpdf .tx span { word-break: keep-all; font-size: 12.5px; color: var(--muted); font-weight: 600 }
+.sumpdf .r { color: var(--muted); font-size: 20px }
+.sumpdfl { display: block; text-align: center; font-size: 13px; font-weight: 700; color: var(--accent-dk); text-decoration: none; padding: 4px }
 .sumnav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px }
 .sumnav .btn { font-size: 14px }
 body.sumguard #app { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none }
@@ -102,9 +109,12 @@ V.sum = () => {
     <div class="seg2" role="tablist" aria-label="교시"><button role="tab" data-act="sumSess" data-v="1" aria-pressed="${SUMUI.sess === 1}">1교시</button><button role="tab" data-act="sumSess" data-v="2" aria-pressed="${SUMUI.sess === 2}">2교시</button></div>
     ${last ? `<button class="card li" data-act="sumOpen" data-id="${last.id}" style="border-color:var(--accent-soft)"><span class="t">이어 읽기 · ${esc(last.title)}</span><span class="s">${esc(sumUnitName(last.unit))} · ${last.no}장</span><span class="r">›</span></button>` : ""}
     ${subs.map((sj) => `<div><h2 class="sec" style="margin:0 0 8px">${esc(subjName(sj))}</h2><section class="card" style="padding:0 16px">${D.units.filter((u) => u.subj === sj).map(unitRow).join("")}</section></div>`).join("")}
+    ${sumPdf() ? `<a class="card sumpdf" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener" data-testid="sumpdf"><span class="ic">PDF</span><span class="tx"><b>요약집 전체를 PDF로 소장하기</b><span>A4 229쪽 · 오프라인 · 출력용</span></span><span class="r">›</span></a>` : ""}
     <div class="tiny muted">기출 50~53회 출제 횟수를 장마다 표시했어요. 요약집은 회원 전용이며 복사·캡처를 막고 화면에 아이디가 표시돼요.</div>
   </div>`;
 };
+const SUM_PDF_URL = "";
+const sumPdf = () => !!SUM_PDF_URL && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 V.sumread = ({ id }) => {
   const c = SUMCH.get(id); if (!c) return V.sum();
   const seq = SUMSEQ[c.unit]; const i = seq.indexOf(id); const pv = SUMCH.get(seq[i - 1]); const nx = SUMCH.get(seq[i + 1]);
@@ -114,6 +124,7 @@ V.sumread = ({ id }) => {
       <h1 class="sumtitle"><span class="muted" style="font-size:15px;display:block">${c.no}장</span>${esc(c.title)}</h1><div class="sumfreq">${esc(c.freq)}</div></div>
     <article class="sumbody">${c.body}</article>
     <button class="btn primary block" data-act="start" data-id="${c.sids[0]}">이 장 문제 풀기</button>
+    ${sumPdf() && !nx ? `<a class="sumpdfl" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener">이 단원을 다 읽었어요 · 요약집 PDF로 들고 다니기 ›</a>` : ""}
     <div class="sumnav">${pv ? `<button class="btn" data-act="sumOpen" data-id="${pv.id}">‹ ${pv.no}장</button>` : `<span></span>`}${nx ? `<button class="btn" data-act="sumOpen" data-id="${nx.id}">${nx.no}장 ›</button>` : `<button class="btn" data-act="sumBack" data-u="${c.unit}">목차로</button>`}</div>
   </div>`;
 };
