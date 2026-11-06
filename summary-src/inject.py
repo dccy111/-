@@ -109,11 +109,11 @@ V.sum = () => {
     <div class="seg2" role="tablist" aria-label="교시"><button role="tab" data-act="sumSess" data-v="1" aria-pressed="${SUMUI.sess === 1}">1교시</button><button role="tab" data-act="sumSess" data-v="2" aria-pressed="${SUMUI.sess === 2}">2교시</button></div>
     ${last ? `<button class="card li" data-act="sumOpen" data-id="${last.id}" style="border-color:var(--accent-soft)"><span class="t">이어 읽기 · ${esc(last.title)}</span><span class="s">${esc(sumUnitName(last.unit))} · ${last.no}장</span><span class="r">›</span></button>` : ""}
     ${subs.map((sj) => `<div><h2 class="sec" style="margin:0 0 8px">${esc(subjName(sj))}</h2><section class="card" style="padding:0 16px">${D.units.filter((u) => u.subj === sj).map(unitRow).join("")}</section></div>`).join("")}
-    ${sumPdf() ? `<a class="card sumpdf" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener" data-testid="sumpdf"><span class="ic">PDF</span><span class="tx"><b>요약집 전체를 PDF로 소장하기</b><span>A4 229쪽 · 오프라인 · 출력용</span></span><span class="r">›</span></a>` : ""}
+    ${sumPdf() ? `<a class="card sumpdf" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener" data-testid="sumpdf"><span class="ic">PDF</span><span class="tx"><b>요약집 전체를 PDF로 소장하기</b><span>포스타입에서 보기 · 오프라인 · 출력용</span></span><span class="r">›</span></a>` : ""}
     <div class="tiny muted">기출 50~53회 출제 횟수를 장마다 표시했어요. 요약집은 회원 전용이며 복사·캡처를 막고 화면에 아이디가 표시돼요.</div>
   </div>`;
 };
-const SUM_PDF_URL = "";
+const SUM_PDF_URL = "https://www.postype.com/@sorbet-gzca/post/23561824";
 const sumPdf = () => !!SUM_PDF_URL && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 V.sumread = ({ id }) => {
   const c = SUMCH.get(id); if (!c) return V.sum();
