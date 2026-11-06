@@ -42,7 +42,21 @@ for u, v in site.items():
     for c in allc[free:]:
         m = re.search(r'<p class="lead">.*?</p>', c['body'], re.S)
         c['body'] = m.group(0) if m else ''; c['lock'] = 1
-blob = json.dumps({"units": site}, ensure_ascii=False).replace('</', '<\\/')
+enc = None
+import os
+_sec = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'secret.txt')
+if os.path.exists(_sec):
+    import base64, hashlib, secrets as _sx
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    pw = re.sub(r'[^A-Z0-9]', '', open(_sec).read().upper())
+    full = {c['id']: c['body'] for v in units.values() for p in v['parts'] for c in p['ch']}
+    locked = {c['id']: full[c['id']] for v in site.values() for p in v['parts'] for c in p['ch'] if c.get('lock')}
+    salt = _sx.token_bytes(16); iv = _sx.token_bytes(12); it = 250000
+    key = hashlib.pbkdf2_hmac('sha256', pw.encode(), salt, it, 32)
+    ct = AESGCM(key).encrypt(iv, json.dumps(locked, ensure_ascii=False).encode(), None)
+    b = lambda x: base64.b64encode(x).decode()
+    enc = {"salt": b(salt), "iv": b(iv), "it": it, "ct": b(ct)}
+blob = json.dumps({"units": site, **({"enc": enc} if enc else {})}, ensure_ascii=False).replace('</', '<\\/')
 block = f'<script id="sumdata" type="application/json">{blob}</script>\n'
 H = re.sub(r'<script id="sumdata" type="application/json">.*?</script>\n', '', H, flags=re.S)
 H = H.replace('<script id="data" type="application/json">', block + '<script id="data" type="application/json">', 1)
@@ -94,6 +108,12 @@ nav.tabs .in { grid-template-columns: repeat(5, 1fr) }
 .sumlockbox b { font-size: 16px; word-break: keep-all }
 .sumlockbox span { font-size: 13.5px; color: var(--muted); line-height: 1.6; word-break: keep-all }
 .sumlockbox .btn { margin-top: 6px; text-decoration: none; color: #fff }
+.sumkey { display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: left; padding-top: 4px }
+.sumkey label { font-size: 13px; font-weight: 700; color: var(--muted); word-break: keep-all }
+.sumkey .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px }
+.sumkey input { font: inherit; font-size: 15px; font-weight: 700; letter-spacing: .06em; padding: 10px 12px; border: 2px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--ink); min-width: 0 }
+.sumkey .btn { margin-top: 0 !important; color: var(--ink) !important }
+.sumkey .err { font-size: 13px; font-weight: 700; color: #c0392b }
 .sumnav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px }
 .sumnav .btn { font-size: 14px }
 body.sumguard #app { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none }
@@ -115,33 +135,48 @@ const SUMCH = new Map(); const SUMSEQ = {};
 Object.entries(SUMD.units).forEach(([u, x]) => { SUMSEQ[u] = []; x.parts.forEach((p) => p.ch.forEach((c) => { c.unit = Number(u); c.part = p.name; SUMCH.set(c.id, c); SUMSEQ[u].push(c.id); })); });
 const SUMUI = { sess: 1, open: {} };
 const sumRead = () => S.sumRead || (S.sumRead = {});
+const sumNorm = (v) => String(v || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+const sumUnlock = async (pw) => {
+  const e = SUMD.enc; if (!e || !window.crypto || !crypto.subtle) return false;
+  try {
+    const b64 = (x) => Uint8Array.from(atob(x), (ch) => ch.charCodeAt(0));
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(sumNorm(pw)), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b64(e.salt), iterations: e.it, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    const m = JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(e.iv) }, key, b64(e.ct))));
+    for (const [id, body] of Object.entries(m)) { const c = SUMCH.get(id); if (c) { c.body = body; c.lock = 0; } }
+    SUMUI.unlocked = true; return true;
+  } catch (err) { return false; }
+};
+const sumAuto = () => { if (S.sumKey && !SUMUI.unlocked && SUMUI.tried !== S.sumKey) { SUMUI.tried = S.sumKey; sumUnlock(S.sumKey).then((ok) => { if (ok && ["sum", "sumread"].includes(route.name)) render(); }); } };
+const sumKeyBox = () => SUMD.enc && !SUMUI.unlocked ? `<div class="sumkey"><label for="sumkey">구매하셨나요? 받은 암호를 넣으면 이 사이트에서도 전부 열려요.</label><div class="row"><input id="sumkey" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="예: ABCD-EFGH-JKLM"><button class="btn" data-act="sumKeyGo">열기</button></div>${SUMUI.keyErr ? `<div class="err">암호가 맞지 않아요. 다시 확인해 주세요.</div>` : ""}</div>` : "";
 const sumUnitName = (u) => (D.units.find((x) => x.id === Number(u)) || {}).name || "";
 V.sum = () => {
-  const subs = EXAM_SESS[SUMUI.sess]; const rd = sumRead();
+  sumAuto(); const subs = EXAM_SESS[SUMUI.sess]; const rd = sumRead();
   const last = S.sumLast && SUMCH.get(S.sumLast);
   const unitRow = (u) => { const seq = SUMSEQ[u.id] || []; const open = !!SUMUI.open[u.id]; const done = seq.filter((id) => rd[id]).length; const freeN = seq.filter((id) => !SUMCH.get(id).lock).length;
     const body = !open ? "" : !seq.length ? `<div class="sumsoon">이 단원 요약은 작성 중이에요.</div>`
-      : `<div class="sumlist">${SUMD.units[u.id].parts.map((p) => `<div class="sumpart">${esc(p.name)}</div>${p.ch.map((c) => `<button class="sumch${rd[c.id] ? " read" : ""}${c.lock ? " lock" : ""}" data-act="sumOpen" data-id="${c.id}"><span class="no">${c.no}장</span><span class="tt">${esc(c.title)}</span>${c.lock ? `<svg class="lk" viewBox="0 0 24 24" aria-label="잠김"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>` : rd[c.id] ? `<svg class="rd" viewBox="0 0 24 24" aria-label="읽음"><path d="M5 12.5l4.5 4.5L19 7"/></svg>` : c.r >= 4 ? `<span class="badge hot">4회</span>` : `<span class="badge">${c.r}회</span>`}</button>`).join("")}`).join("")}</div>`;
-    return `<div class="sumunit"><button class="sumhead" data-act="sumUnit" data-id="${u.id}" aria-expanded="${open}"><span class="t">${esc(u.name)}</span><span class="s">${seq.length ? `${seq.length}장 · 무료 ${seq.filter((id) => !SUMCH.get(id).lock).length}장 · ${done}장 읽음` : "작성 중"}</span><span class="pg">${seq.length ? Math.round((done / freeN) * 100) + "%" : ""}</span><svg class="ch" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>${body}</div>`; };
+      : `<div class="sumlist">${SUMD.units[u.id].parts.map((p) => `<div class="sumpart">${esc(p.name)}</div>${p.ch.map((c) => `<button class="sumch${rd[c.id] ? " read" : ""}${c.lock ? " lock" : ""}" data-act="sumOpen" data-id="${c.id}"><span class="no">${c.no}장</span><span class="tt">${esc(c.title)}</span>${c.lock ? `<svg class="lk" viewBox="0 0 24 24" aria-label="잠김"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>` : rd[c.id] ? `<svg class="rd" viewBox="0 0 24 24" aria-label="읽음"><path d="M5 12.5l4.5 4.5L19 7"/></svg>` : c.r >= 4 ? `<span class="badge hot">4회</span>` : `<span class="badge">${c.r ? c.r + "회" : "기본"}</span>`}</button>`).join("")}`).join("")}</div>`;
+    return `<div class="sumunit"><button class="sumhead" data-act="sumUnit" data-id="${u.id}" aria-expanded="${open}"><span class="t">${esc(u.name)}</span><span class="s">${seq.length ? `${seq.length}장 · ${freeN < seq.length ? `무료 ${freeN}장 · ` : ""}${done}장 읽음` : "작성 중"}</span><span class="pg">${seq.length ? Math.round((done / freeN) * 100) + "%" : ""}</span><svg class="ch" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>${body}</div>`; };
   return `${hud()}<div class="stack" style="gap:16px" data-testid="sumview">
     <div class="seg2" role="tablist" aria-label="교시"><button role="tab" data-act="sumSess" data-v="1" aria-pressed="${SUMUI.sess === 1}">1교시</button><button role="tab" data-act="sumSess" data-v="2" aria-pressed="${SUMUI.sess === 2}">2교시</button></div>
     ${last ? `<button class="card li" data-act="sumOpen" data-id="${last.id}" style="border-color:var(--accent-soft)"><span class="t">이어 읽기 · ${esc(last.title)}</span><span class="s">${esc(sumUnitName(last.unit))} · ${last.no}장</span><span class="r">›</span></button>` : ""}
     ${subs.map((sj) => `<div><h2 class="sec" style="margin:0 0 8px">${esc(subjName(sj))}</h2><section class="card" style="padding:0 16px">${D.units.filter((u) => u.subj === sj).map(unitRow).join("")}</section></div>`).join("")}
-    ${sumPdf() ? `<a class="card sumpdf" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener" data-testid="sumpdf"><span class="ic">PDF</span><span class="tx"><b>요약집 전체를 PDF로 소장하기</b><span>포스타입에서 보기 · 오프라인 · 출력용</span></span><span class="r">›</span></a>` : ""}
-    <div class="tiny muted">기출 50~53회 출제 횟수를 장마다 표시했어요. 단원마다 앞부분 절반을 무료로 공개해요. 요약집은 회원 전용이며 복사·캡처를 막고 화면에 아이디가 표시돼요.</div>
+    ${sumPdf() && !SUMUI.unlocked ? `<a class="card sumpdf" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener" data-testid="sumpdf"><span class="ic">PDF</span><span class="tx"><b>요약집 전체를 PDF로 소장하기</b><span>포스타입에서 보기 · 오프라인 · 출력용</span></span><span class="r">›</span></a>` : ""}
+    ${sumKeyBox()}
+    <div class="tiny muted">기출 50~53회 출제 횟수를 장마다 표시했어요. ${SUMUI.unlocked ? "구매 암호로 전체가 열려 있어요." : "단원마다 앞부분 절반을 무료로 공개해요."} 요약집은 회원 전용이며 복사·캡처를 막고 화면에 아이디가 표시돼요.</div>
   </div>`;
 };
 const SUM_PDF_URL = "https://www.postype.com/@sorbet-gzca/post/23561824";
 const sumPdf = () => !!SUM_PDF_URL && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 V.sumread = ({ id }) => {
-  const c = SUMCH.get(id); if (!c) return V.sum();
+  sumAuto(); const c = SUMCH.get(id); if (!c) return V.sum();
   const seq = SUMSEQ[c.unit]; const i = seq.indexOf(id); const pv = SUMCH.get(seq[i - 1]); const nx = SUMCH.get(seq[i + 1]);
   const sess = Object.entries(EXAM_SESS).find(([, v]) => v.includes(D.units.find((u) => u.id === c.unit).subj))[0];
   return `<div class="stack" style="gap:18px" data-testid="sumread">
     <div><div class="sumcrumb"><button data-act="sumBack">요약집</button><span>›</span><span>${sess}교시</span><span>›</span><button data-act="sumBack" data-u="${c.unit}">${esc(sumUnitName(c.unit))}</button><span>›</span><span>${esc(c.part)}</span></div>
       <h1 class="sumtitle"><span class="muted" style="font-size:15px;display:block">${c.no}장</span>${esc(c.title)}</h1><div class="sumfreq">${esc(c.freq)}</div></div>
     ${c.lock ? `<article class="sumbody sumlocked">${c.body}<div class="sumfade" aria-hidden="true"><p>이 장의 본문과 표, 기억 고리, 시험에서는 정리가 이어집니다.</p><p>지금 읽은 앞 장들과 같은 방식으로, 개념의 흐름부터 시험에 나오는 형태까지 한 번에 정리되어 있습니다.</p></div></article>
-    <div class="card sumlockbox"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>여기부터는 요약집 PDF에서 볼 수 있어요</b><span>단원마다 앞 절반은 무료예요. ${esc(sumUnitName(c.unit))} ${SUMSEQ[c.unit].length}장 전체와 15개 단원 192장이 PDF 한 권에 들어 있어요.</span>${sumPdf() ? `<a class="btn primary block" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener" data-testid="sumbuy">요약집 PDF 보러 가기</a>` : ""}</div>` : `<article class="sumbody">${c.body}</article>`}
+    <div class="card sumlockbox"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><b>여기부터는 요약집 PDF에서 볼 수 있어요</b><span>단원마다 앞 절반은 무료예요. ${esc(sumUnitName(c.unit))} ${SUMSEQ[c.unit].length}장 전체와 15개 단원 192장이 PDF 한 권에 들어 있어요.</span>${sumPdf() ? `<a class="btn primary block" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener" data-testid="sumbuy">요약집 PDF 보러 가기</a>` : ""}${sumKeyBox()}</div>` : `<article class="sumbody">${c.body}</article>`}
     <button class="btn primary block" data-act="start" data-id="${c.sids[0]}">이 장 문제 풀기</button>
     ${sumPdf() && !nx && !c.lock ? `<a class="sumpdfl" href="${esc(SUM_PDF_URL)}" target="_blank" rel="noopener">이 단원을 다 읽었어요 · 요약집 PDF로 들고 다니기 ›</a>` : ""}
     <div class="sumnav">${pv ? `<button class="btn" data-act="sumOpen" data-id="${pv.id}">‹ ${pv.no}장</button>` : `<span></span>`}${nx ? `<button class="btn" data-act="sumOpen" data-id="${nx.id}">${nx.no}장 ›</button>` : `<button class="btn" data-act="sumBack" data-u="${c.unit}">목차로</button>`}</div>
@@ -177,6 +212,9 @@ if 'sumOpen:' not in H:
   sumOpen: (d) => { const c = SUMCH.get(d.id); if (!c) return; if (!c.lock) { sumRead()[c.id] = sumRead()[c.id] || Date.now(); S.sumLast = c.id; save(); } nav("sumread", { id: c.id }); },
   sumBack: (d) => { if (d.u) { SUMUI.open[d.u] = true; SUMUI.sess = Number(Object.entries(EXAM_SESS).find(([, v]) => v.includes(D.units.find((u) => u.id === Number(d.u)).subj))[0]); } nav("sum"); },''', 1)
 H = H.replace('sumOpen: (d) => { const c = SUMCH.get(d.id); if (!c) return; sumRead()[c.id] = sumRead()[c.id] || Date.now(); S.sumLast = c.id; save(); nav("sumread", { id: c.id }); },', 'sumOpen: (d) => { const c = SUMCH.get(d.id); if (!c) return; if (!c.lock) { sumRead()[c.id] = sumRead()[c.id] || Date.now(); S.sumLast = c.id; save(); } nav("sumread", { id: c.id }); },', 1)
+if 'sumKeyGo:' not in H:
+    H = H.replace('  sumSess: (d) => {', '''  sumKeyGo: async (d, el) => { const inp = document.getElementById("sumkey"); const v = inp && inp.value; if (!sumNorm(v)) return; el.disabled = true; const ok = await sumUnlock(v); el.disabled = false; SUMUI.keyErr = !ok; if (ok) { S.sumKey = sumNorm(v); save(); toast("요약집 전체가 열렸어요"); } render(); },
+  sumSess: (d) => {''', 1)
 # 동기화 병합
 if 'o.sumRead' not in H:
     H = H.replace('o.skills = Object.assign({}, R.skills, L.skills);', 'o.skills = Object.assign({}, R.skills, L.skills); o.sumRead = Object.assign({}, R.sumRead, L.sumRead);', 1)
