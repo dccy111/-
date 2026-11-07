@@ -1,0 +1,96 @@
+
+/* day-type colors */
+.U{--c:#D4FF3A;--bgc:#232A0B}
+.L{--c:#5AB8FF;--bgc:#0E2232}
+.P{--c:#FF8A4C;--bgc:#2E1A0F}
+.Pl{--c:#B98CFF;--bgc:#22183A}
+.Lg{--c:#45D6C4;--bgc:#0E2A27}
+.F{--c:#F5C451;--bgc:#2B2412}
+.R{--c:#5C5C63;--bgc:#161618}
+
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+.wk div{height:30px;border-radius:8px;background:var(--bgc);color:var(--c);display:grid;place-items:center;font-size:11px;font-weight:800;font-family:"Inter"}
+.wkl{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:4px}
+.wkl span{text-align:center;font-size:10.5px;color:var(--dim);font-family:"Noto Sans KR"}
+
+.scard{background:var(--surface);border-radius:20px;padding:16px;margin-top:10px;border:1.5px solid transparent}
+.scard.sel{border-color:var(--accent);background:#14170B}
+.scard .h{display:flex;align-items:center;gap:8px}
+.scard .t{font-family:"Noto Sans KR";font-weight:900;font-size:16px}
+.badge{font-family:"Noto Sans KR";font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;background:var(--accent);color:var(--accentInk)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-family:"Noto Sans KR";font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--surface2);color:#C9C9CE}
+.chip.ok::before{content:"✓ ";color:var(--good)}
+.chip.no::before{content:"! ";color:var(--warn);font-weight:900}
+.radio{margin-left:auto;width:22px;height:22px;border-radius:50%;border:2px solid var(--dim)}
+.sel .radio{border:6px solid var(--accent)}
+.custom{display:flex;align-items:center;gap:12px;background:transparent;border:1.5px dashed #3a3a40;border-radius:20px;padding:16px;margin-top:10px;font-family:"Noto Sans KR";font-weight:700;font-size:15px}
+.custom small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+.custom .pl{width:36px;height:36px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;font-size:20px;color:var(--accent)}
+
+/* editor */
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-radius:14px;padding:4px;margin-top:14px}
+.seg div{height:38px;border-radius:10px;display:grid;place-items:center;font-family:"Noto Sans KR";font-weight:700;font-size:13.5px;color:var(--muted)}
+.seg .on{background:var(--surface2);color:var(--text)}
+.dayrow{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.dayrow:last-child{border:none}
+.dayrow .d{width:26px;font-family:"Noto Sans KR";font-weight:700;color:var(--muted);font-size:14px}
+.dtype{display:flex;align-items:center;gap:8px;background:var(--bgc);color:var(--c);border-radius:12px;padding:9px 12px;font-weight:800;font-size:14.5px;min-width:118px}
+.dtype .caret{margin-left:auto;font-size:10px;opacity:.7}
+.dayrow .info{margin-left:auto;text-align:right;font-size:12px;color:var(--muted);font-family:"Noto Sans KR"}
+.dayrow .info b{display:block;color:#C9C9CE;font-family:"Inter";font-size:13px;font-weight:600}
+.dayrow.warn .dtype{box-shadow:0 0 0 1.5px var(--warn)}
+.alert{background:#2A170D;border:1px solid #5A2E14;border-radius:16px;padding:12px 14px;margin-top:12px;font-family:"Noto Sans KR"}
+.alert .a{color:var(--warn);font-weight:900;font-size:13.5px}
+.alert .b{color:#D8C6BB;font-size:12.5px;margin-top:3px;line-height:1.45}
+.alert .fix{display:inline-block;margin-top:9px;background:var(--warn);color:#1A0E06;font-weight:900;font-size:12.5px;padding:7px 12px;border-radius:10px}
+.freq{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
+.freq div{background:var(--surface);border-radius:12px;padding:8px 6px;text-align:center}
+.freq .m{font-family:"Noto Sans KR";font-size:11px;color:var(--muted)}
+.freq .n{font-size:15px;font-weight:800;margin-top:2px}
+.freq .n.lo{color:var(--warn)}
+.sheetlist{display:flex;gap:6px;flex-wrap:wrap}
+
+/* program week */
+.wday{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:16px;padding:12px 14px;margin-top:8px}
+.wday .dl{width:24px;font-family:"Noto Sans KR";font-weight:700;font-size:13px;color:var(--muted)}
+.wday .bar{width:4px;height:34px;border-radius:2px;background:var(--c);margin:0}
+.wday .nm{font-weight:800;font-size:15px}
+.wday .sb{font-family:"Noto Sans KR";font-size:12px;color:var(--muted);margin-top:1px}
+.wday .tm{margin-left:auto;font-size:13px;color:#C9C9CE;font-weight:600}
+.wday.today{outline:1.5px solid var(--accent)}
+.wday.done .nm{color:var(--muted)}
+.rest{display:flex;gap:12px;align-items:center;padding:8px 14px;margin-top:4px;font-family:"Noto Sans KR";font-size:12.5px;color:var(--dim)}
+.vol{background:var(--surface);border-radius:18px;padding:14px 16px;margin-top:8px}
+.vrow{display:grid;grid-template-columns:62px 1fr 48px;align-items:center;gap:10px;padding:5px 0}
+.vrow .m{font-family:"Noto Sans KR";font-size:12.5px;color:#C9C9CE}
+.track{position:relative;height:8px;border-radius:4px;background:var(--surface2)}
+.track .band{position:absolute;top:-3px;bottom:-3px;border-radius:4px;background:rgba(212,255,58,.12);border:1px dashed rgba(212,255,58,.35)}
+.track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:#C9C9CE}
+.track .fill.in{background:var(--accent)}
+.vrow .v{text-align:right;font-size:13px;font-weight:700}
+.legend{display:flex;gap:12px;margin-top:8px;font-family:"Noto Sans KR";font-size:11px;color:var(--dim)}
+.legend i{display:inline-block;width:14px;height:8px;border-radius:3px;vertical-align:middle;margin-right:4px}
+.sechead{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 4px}
+.sechead b{font-family:"Noto Sans KR";font-weight:900;font-size:16px}
+.sechead span{font-family:"Noto Sans KR";font-size:13px;font-weight:700;color:var(--accent)}
+
+.status{flex-shrink:0}
+.body{min-height:0}
+.dots{margin:8px 0 16px}
+.scard{padding:13px 14px;margin-top:8px}
+.wk div{height:26px}
+.chips{margin-top:8px;gap:5px}
+.chip{font-size:11px;padding:3px 8px}
+.custom{padding:12px 14px;margin-top:8px}
+.dayrow{padding:6px 0}
+.dtype{padding:7px 12px}
+.alert{padding:10px 12px;margin-top:8px}
+.alert .fix{margin-top:7px;padding:6px 11px}
+.freq{margin-top:6px}
+.freq div{padding:6px}
+.wday{padding:9px 14px;margin-top:6px}
+.wday .bar{height:30px}
+.rest{padding:5px 14px;margin-top:2px}
+.sechead{margin:14px 0 4px}
+.vrow{padding:3px 0}
