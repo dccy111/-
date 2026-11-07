@@ -1,4 +1,6 @@
-# 근거 기반 웨이트 트레이닝 앱 — 설계 문서 v0.1 (검토용 초안)
+# 근거 기반 웨이트 트레이닝 앱 — 설계 문서 v0.2 (검토용 초안)
+
+> v0.2: 주간 분할 사용자 선택·직접 구성 추가 (§2-1, §3, §4 STEP 4-b, §11). 시안: `docs/mockup/split.png`
 
 > 이 문서는 **코드 작성 전 설계안**이다. 모든 수치는 "출발점(default)"이며, 엔진 내부에서
 > `evidence_level`과 함께 관리되어 조정 가능하다. 확정 전까지 수정을 전제로 한다.
@@ -80,8 +82,9 @@ src/
 [1] 목표 선택 (1탭)       💪근력 / 🏋️근비대 / ⚡근력+근비대 / 🔥감량+근육유지 / 🏃파워
 [2] 주 몇 회 (1탭)        3 / 4 / 5 / 6
 [3] 1회 운동 시간 (1탭)   30 / 45 / 60 / 90분
-[4] 운동 경력 (1탭)       처음/6개월 미만 · 6개월~2년 · 2년 이상        ← 제안: 추가 (질문 참고)
+[4] 주간 분할 (1탭)       추천 분할이 기본 선택 → [이대로 할게요] / 다른 분할 / 직접 구성   ← v0.2 추가
 [5] 1RM 입력 (선택, 건너뛰기 가능)
+    (운동 경력 질문은 확정 시 [3]과 [4] 사이에 추가)
       Squat [   ] kg   Bench [   ] kg   Deadlift [   ] kg   OHP [   ] kg  ...
       "모르면 비워두세요. 첫 운동에서 자동으로 맞춰집니다."
       (선택) "3~5회 가능한 무게 × 횟수"로도 입력 가능 → e1RM 계산
@@ -99,7 +102,8 @@ src/
   → 다음날 Today에 이미 조정된 처방이 표시
 ```
 
-- **일정은 요일 고정이 아니라 "순서 큐(rotation)"** 를 기본으로 한다. 하루 빠져도 다음 운동이 그대로
+- **일정 모드는 두 가지**: `순서대로(rotation)` / `요일 고정(fixed_weekdays)`. 추천 분할 선택 시 기본은 rotation,
+  직접 구성에서는 요일 고정이 기본. rotation에서는 하루 빠져도 다음 운동이 그대로
   "오늘 운동"이 되어 계획이 깨지지 않는다. (요일 지정은 2차)
 
 ### 2-3. 1RM 없는 운동의 첫 세션 (Calibration)
@@ -204,7 +208,10 @@ user_exercises(                       -- 사용자별 운동 상태 (1RM, e1RM, 
 programs(
   id uuid PK, user_id uuid FK,
   status text,                       -- 'active'|'archived'
-  goal text, split_type text,        -- 'full_body_3','upper_lower_4','ul_ppl_5','ppl_6'...
+  goal text, split_type text,        -- 'full_body_3','upper_lower_4','ul_ppl_5','ppl_6',...,'custom'
+  split_source text,                 -- 'recommended'|'alternative'|'custom' (사용자가 고른 방식)
+  schedule_mode text,                -- 'rotation'|'fixed_weekdays'
+  split_warnings jsonb,              -- 사용자가 경고를 무시하고 저장한 경우 기록
   inputs_snapshot jsonb,             -- 생성 당시 입력값 (재현성)
   weekly_volume_targets jsonb,       -- {chest: 12, quads: 10, ...}
   rationale jsonb,                   -- [{code, params}]
@@ -216,6 +223,8 @@ programs(
 program_days(
   id uuid PK, program_id uuid FK,
   seq int,                           -- rotation 순서
+  weekday int NULL,                  -- fixed_weekdays 모드일 때 0(월)~6(일)
+  day_type text,                     -- 'upper'|'lower'|'push'|'pull'|'legs'|'full'
   label text,                        -- 'Upper A'
   est_minutes int
 )
@@ -397,6 +406,29 @@ score(split) =
 ```
 기본 결과 예시: 3일→FB3, 4일→UL4, 5일 60분→UL+PPL, 5일 30분→FB/UL 혼합, 6일 60분+→PPL×2, 6일 30분→UL×3.
 **같은 입력이면 항상 같은 결과**(랜덤 없음).
+
+#### STEP 4-b — 사용자 분할 선택·직접 구성 (v0.2)
+
+`chooseSplit()`은 1개가 아니라 **점수순 후보 목록**을 반환한다: `[{split, score, checks[], warnings[]}]`.
+- UI에는 상위 1개(추천 배지) + 대안 2개 + "직접 구성"을 보여준다. 각 후보에 판정 칩을 붙인다
+  (✓ 모든 근육 주 2회 / ✓ 60분 안에 들어감 / ! 하체 주 1회인 주가 생김).
+- 사용자가 무엇을 고르든 이후 파이프라인(STEP 5~9)은 동일하다. 분할은 **볼륨을 나누는 틀**일 뿐,
+  주간 볼륨 목표·시간 제약·진행 로직은 그대로 적용된다.
+
+**직접 구성(custom)** — 요일마다 day type(Upper/Lower/Push/Pull/Legs/Full/휴식)을 지정.
+`validateCustomSplit(week)`가 즉시 검사한다. **막지 않고 알려준다** (안전·시간 제약만 강제):
+
+| 검사 | 기준 | 표시 | 자동 수정 제안 |
+|---|---|---|---|
+| 같은 근육 연속일 | 같은 주동근을 primary로 쓰는 day가 연속 (예: Legs→Lower) | ! 경고 | 인접 요일 교환으로 해결되는 최소 교환 1개 (예: 목↔금) |
+| 근육별 주간 빈도 | 주요 근육이 주 1회 이하 | ! 경고 | 해당 근육을 포함하는 day type 교체안 |
+| 운동일 수 | 선택한 주 횟수와 다름 | 정보 | 설정의 주 횟수를 따라 갱신 |
+| 세션 시간 | day별 예상시간 > 선택 시간 | 자동 압축 (STEP 8) | — (hard constraint) |
+| 볼륨 분배 불가 | 근육 볼륨 목표를 세션당 상한 안에서 못 채움 | 정보 | "주간 세트가 출발점보다 낮아요" |
+
+- 교환 제안은 결정적: 가능한 인접 교환 중 경고 수를 가장 많이 줄이는 것 → 동점이면 앞 요일 우선.
+- 같은 이름의 day가 주에 2번 나오면 A/B 변형으로 자동 분리 (Upper A / Upper B: 메인 리프트 강도·운동 변형 다르게).
+- 분할 변경은 **프로그램 재생성**이지만 `progression_state`는 운동 단위(exercise_id)로 이어받아 기록·중량이 초기화되지 않는다.
 
 #### STEP 5 — 근육별 주간 볼륨 목표
 
@@ -665,12 +697,14 @@ Deload 처방(1주): 세트 −40~50%, 중량 −5~10% (또는 중량 유지 + �
 
 | # | 화면 | 진입 | 핵심 |
 |---|---|---|---|
-| S1 | 온보딩 (4~5 스텝) | 최초 실행 | 큰 선택 카드, 1탭 진행, 1RM은 건너뛰기 가능 |
+| S1 | 온보딩 (5 스텝) | 최초 실행 | 큰 선택 카드, 1탭 진행, 1RM은 건너뛰기 가능 |
+| S1-b | 주간 분할 선택 | 온보딩 4/5, 프로그램 탭 [분할 변경] | 추천 기본 선택, 대안 2개 + 직접 구성 |
+| S1-c | 주간 직접 구성 | S1-b [직접 구성하기] | 요일별 day type 지정, 경고 + 원탭 수정, 근육별 빈도 |
 | S2 | 프로그램 생성 완료 | S1 끝 | "프로그램을 만들었습니다" + 짧은 설명 1~2문장 + [오늘 운동 보기] |
 | S3 | Today (홈) | 기본 탭 | 오늘 운동 카드 + 대시보드 3타일 |
 | S4 | Workout Player | [운동 시작] | 현재 세트만 크게, 세트 완료/RIR/휴식 타이머 |
 | S5 | Workout Summary | 마지막 세트 후 | 볼륨, PR, 다음 목표 |
-| S6 | Program | 하단 탭 | 이번 rotation의 day 목록 → day 상세 → [왜 이렇게 짰어?] |
+| S6 | Program | 하단 탭 | 이번 주(요일별 day·완료 여부·예상시간) + 근육별 주간 세트 → day 상세 → [왜 이렇게 짰어?] |
 | S7 | Progress | 하단 탭 | 운동별 추정 1RM·PR 목록 → 상세(e1RM 그래프 1개, 기록 리스트) |
 | S8 | Settings | 하단 탭 | 단위, 체중, 1RM 수정, 목표/빈도/시간 변경(→재생성), 원판 증분, RIR 입력 방식 |
 
@@ -880,3 +914,10 @@ Row           62.5kg × 8 × 3
 | deload | 볼륨 감소 중심, 강도 소폭 감소, 고정 주기보단 필요 기반 | low (expert consensus) | Bell et al. 2023 (Delphi) | 실험 근거 부족 |
 | progression_thresholds | 결과 분류 임계값(90%, Δ±1 등) | heuristic | 코치 실무 기반 | 검증 필요, 로그로 튜닝 |
 | time_constants | rep 3–4초, 전환 90초 등 | heuristic | 실측 기반 기본값 | 사용 기록으로 보정 |
+
+### 테스트 추가 (v0.2 분할)
+- `chooseSplit` 후보가 점수순·결정적, 추천 1개 + 대안 ≥ 2개
+- `validateCustomSplit`: Legs→Lower 연속 경고, 목↔금 교환 제안이 경고를 0으로 만듦
+- 주요 근육 주 1회 이하 → 경고, 운동일 수 불일치 → 정보
+- custom 분할에서도 전 시간 조합에서 예상시간 ≤ 선택 시간
+- 분할 변경 후 progression_state(중량·기록) 보존
