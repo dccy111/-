@@ -175,6 +175,13 @@ describe('split selection', () => {
     expect(issues.some((i) => i.code === 'LOW_FREQUENCY' && i.groups?.includes('quads'))).toBe(true);
     expect(issues.find((i) => i.code === 'LOW_FREQUENCY' && i.groups?.includes('quads'))?.fix).toEqual({ kind: 'add_focus', day: 5, region: 'legs' });
   });
+  it('adjacent same-group days trim accessory sets on the second day', () => {
+    const R = { type: 'rest' } as const;
+    const base: WeekLayout = [{ type: 'upper' }, R, { type: 'focus', focus: ['arms'] }, R, { type: 'lower' }, R, R];
+    const adjacent: WeekLayout = [{ type: 'upper' }, { type: 'focus', focus: ['arms'] }, R, R, { type: 'lower' }, R, R];
+    const sets = (l: WeekLayout) => generateProgram(profile({ sessionMinutes: 90 }), refs, { programId: 'o', now: '', layout: l }).days.find((d) => d.plan.type === 'focus')!.slots.reduce((a, s) => a + s.sets, 0);
+    expect(sets(adjacent)).toBeLessThan(sets(base));
+  });
   it('focus days only use exercises for the chosen regions, and custom programs keep the time limit', () => {
     const layout: WeekLayout = [{ type: 'upper' }, { type: 'lower' }, { type: 'rest' }, { type: 'push' }, { type: 'pull' }, { type: 'focus', focus: ['shoulders', 'arms'] }, { type: 'rest' }];
     const g = generateProgram(profile(), refs, { programId: 'f', now: '', layout });

@@ -8,7 +8,7 @@ import type {
 } from '../types';
 import { slotsForDay, type SlotTemplate } from './dayTemplates';
 import { prescribeSlot } from './prescribe';
-import { dayLabel, rankSplits, SPLIT_TEMPLATES, validateLayout } from './split';
+import { adjacentOverlaps, dayLabel, rankSplits, SPLIT_TEMPLATES, validateLayout } from './split';
 import { fitToTimeBudget } from './timeBudget';
 import { round1, slotVolume, volumeTargets, weeklyPlannedVolume, type VolumeMap } from './volume';
 
@@ -126,6 +126,22 @@ function focusMuscles(layout: WeekLayout): Set<MuscleId> {
   return out;
 }
 
+/**
+ * When two consecutive calendar days train the same group (custom layouts), trim one accessory set
+ * for that group on the second day (min 2). evidence: low (recovery heuristic)
+ */
+function reduceAdjacentOverlap(days: { weekday: number; slots: SlotPrescription[] }[], layout: WeekLayout) {
+  for (const o of adjacentOverlaps(layout)) {
+    const day = days.find((d) => d.weekday === o.b);
+    if (!day) continue;
+    for (const s of day.slots) {
+      if (s.role === 'main') continue;
+      const hit = getExercise(s.exerciseId).muscles.some((m) => m.role === 'primary' && o.groups.includes(MUSCLES[m.muscle].group));
+      if (hit && s.sets > s.minSets) s.sets -= 1;
+    }
+  }
+}
+
 export function generateProgram(profile: UserProfile, refs: Record<string, LoadReference | undefined>, opts: GenerateOptions): Program {
   const ranked = rankSplits(profile);
   let layout: WeekLayout;
@@ -174,6 +190,7 @@ export function generateProgram(profile: UserProfile, refs: Record<string, LoadR
 
   const targets = volumeTargets(profile.goal, profile.trainingAge);
   rebalanceVolume(rawDays, targets, focusMuscles(layout));
+  reduceAdjacentOverlap(rawDays, layout);
 
   const days: ProgramDay[] = rawDays.map((d, seq) => {
     const fit = fitToTimeBudget(d.slots, profile.sessionMinutes, d.priorities);
