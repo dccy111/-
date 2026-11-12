@@ -1,0 +1,63 @@
+const { chromium } = require('playwright');
+let pass = 0, fail = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); c ? pass++ : fail++; };
+(async () => {
+  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+  const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+  const o = process.argv[3]; const shot = (n) => p.screenshot({ path: `${o}/${n}.png` });
+  await p.goto('file://' + process.argv[2]); await p.waitForTimeout(600);
+  ok(await p.locator('[data-testid=notice]').count() === 1, '처음 들어오면 홈에 공지');
+  await shot('1-홈-공지');
+  await p.click('[data-act=noticeGo]'); await p.waitForTimeout(200);
+  ok(await p.evaluate(() => route.name === 'exam' && S.xmode === 'study'), '공지 버튼 → 시험 탭 해설 모드');
+  await shot('2-시험탭-해설모드');
+  await p.click('nav.tabs button[data-k="home"]'); await p.waitForTimeout(150);
+  ok(await p.locator('[data-testid=notice]').count() === 0, '공지는 한 번만');
+  await p.click('nav.tabs button[data-k="exam"]'); await p.waitForTimeout(150);
+  await p.click('[data-act=examAsk][data-k=mini][data-v="1"]'); await p.waitForTimeout(150);
+  ok((await p.locator('.modal, [role=dialog]').first().innerText()).includes('시간 제한 없음'), '시작 안내: 시간 제한 없음');
+  await p.click('[data-act=examStart]'); await p.waitForTimeout(200);
+  ok(await p.evaluate(() => S.xcur && S.xcur.study && S.xcur.ends === null && S.xcur.q.length === 20), '해설 모드 시험 20문항, 시간 없음');
+  ok(await p.locator('#xtimer').count() === 0, '타이머 없음');
+  // 일부러 틀리게 답하기
+  const wrongAns = async () => p.evaluate(() => { const x = S.xcur; const e = x.q[x.i]; const it = IT.get(e.id); if (it.k === 'ox') return it.a ? '0' : '1'; return String(e.o.findIndex((v) => v !== it.a)); });
+  let v = await wrongAns(); await p.click(`[data-act=xAns][data-v="${v}"]`); await p.waitForTimeout(400);
+  ok(await p.locator('[data-testid=xfb]').count() === 1 && (await p.locator('[data-testid=xfb]').innerText()).includes('오답'), '답하면 바로 오답 + 해설');
+  ok(await p.evaluate(() => S.xcur.i === 0), '해설 모드는 자동으로 넘어가지 않음');
+  await p.click(`[data-act=xAns][data-v="${v === '0' ? '1' : '0'}"]`).catch(() => {}); await p.waitForTimeout(100);
+  ok(await p.evaluate((v) => { const x = S.xcur; const e = x.q[0]; const it = IT.get(e.id); return it.k === 'ox' ? x.ans[0] === (v === '1') : x.ans[0] === e.o[Number(v)]; }, v), '한 번 답하면 바꿀 수 없음');
+  await shot('3-해설모드-오답');
+  await p.click('[data-act=wToggle]'); await p.waitForTimeout(150);
+  ok(await p.evaluate(() => wrongList().length === 1), '오답노트에 추가');
+  await p.click('[data-act=xGo][data-v=next]'); await p.waitForTimeout(150);
+  const right = await p.evaluate(() => { const x = S.xcur; const e = x.q[x.i]; const it = IT.get(e.id); return it.k === 'ox' ? (it.a ? '1' : '0') : String(e.o.indexOf(it.a)); });
+  await p.click(`[data-act=xAns][data-v="${right}"]`); await p.waitForTimeout(300);
+  ok((await p.locator('[data-testid=xfb]').innerText()).includes('정답이에요'), '맞히면 정답 표시');
+  await shot('4-해설모드-정답');
+  for (let i = 2; i < 6; i++) { await p.click('[data-act=xGo][data-v=next]'); await p.waitForTimeout(80); const w = await wrongAns(); await p.click(`[data-act=xAns][data-v="${w}"]`); await p.waitForTimeout(80); }
+  await p.evaluate(() => A.xSubmit()); await p.waitForTimeout(300);
+  ok(await p.evaluate(() => route.name === 'xres' && S.exams.slice(-1)[0].study === true), '제출 → 결과(해설 모드 기록)');
+  await p.click('[data-testid=waddall]'); await p.waitForTimeout(200);
+  const nW = await p.evaluate(() => wrongList().length);
+  ok(nW >= 5, '틀린 문제 모두 담기: ' + nW);
+  await shot('5-결과-오답담기');
+  await p.click('[data-act=wOpen]'); await p.waitForTimeout(200);
+  ok(await p.locator('[data-testid=wrongs]').count() === 1, '오답노트 화면');
+  await shot('6-오답노트');
+  await p.click('[data-testid=wstart]'); await p.waitForTimeout(200);
+  ok(await p.evaluate(() => S.xcur && S.xcur.kind === 'wrong' && S.xcur.q.length === wrongList().length), '오답노트 다시 풀기 시작');
+  const r2 = await p.evaluate(() => { const x = S.xcur; const e = x.q[0]; const it = IT.get(e.id); return it.k === 'ox' ? (it.a ? '1' : '0') : String(e.o.indexOf(it.a)); });
+  await p.click(`[data-act=xAns][data-v="${r2}"]`); await p.waitForTimeout(200);
+  ok((await p.locator('[data-act=wToggle]').innerText()).includes('빼기'), '오답노트 문제는 "빼기" 버튼');
+  await p.click('[data-act=wToggle]'); await p.waitForTimeout(150);
+  ok(await p.evaluate((n) => wrongList().length === n - 1, nW), '맞힌 문제 오답노트에서 빼기');
+  // 동기화 병합: 삭제(최신)가 이김
+  ok(await p.evaluate(() => { const L = { v: 1, wrongs: { a: { t: 5, del: 1 } } }, R = { v: 1, wrongs: { a: { t: 3, s: 1 }, b: { t: 1, s: 1 } } }; const m = mergeState(L, R); return m.wrongs.a.del === 1 && m.wrongs.b.s === 1; }), '기기 간 병합: 최신 기록 우선');
+  // 실전 모드는 그대로
+  await p.evaluate(() => { A.xLeave(); }); await p.evaluate(() => { S.xcur = null; S.xmode = 'real'; save(); nav('exam'); }); await p.waitForTimeout(100);
+  await p.click('[data-act=examAsk][data-k=mini][data-v="1"]'); await p.click('[data-act=examStart]'); await p.waitForTimeout(200);
+  ok(await p.evaluate(() => !!S.xcur.ends && !S.xcur.study) && await p.locator('#xtimer').count() === 1, '실전 모드는 타이머 그대로');
+  const w3 = await wrongAns(); await p.click(`[data-act=xAns][data-v="${w3}"]`); await p.waitForTimeout(100);
+  ok(await p.locator('[data-testid=xfb]').count() === 0, '실전 모드는 해설 숨김');
+  ok(errs.length === 0, '콘솔 오류 0건 ' + errs.join(' | '));
+  console.log(`${pass} PASS / ${fail} FAIL`); await b.close();
+})();

@@ -221,6 +221,13 @@ body.gated nav.tabs { display: none }
 .xbar { position: relative; height: 12px; border-radius: 6px; background: var(--sunk) } .xbar i { display: block; height: 100%; border-radius: 6px } .xbar i.ok { background: var(--accent) } .xbar i.warn { background: var(--gold) } .xbar i.bad { background: var(--bad) }
 .xbar em { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: .35 }
 .xwrong { padding: 10px 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px } .xwrong:first-of-type { border-top: 0 }
+.lfb .xe b, .lfb .xe strong { display: inline; margin: 0 }
+.xwbtn { font-size: 13px; padding: 0 12px; min-height: 34px } .xwbtn.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-dk) }
+.xstudy { font-size: 13px !important; font-weight: 900; color: var(--accent-dk) !important; background: var(--accent-soft); padding: 4px 10px; border-radius: 999px }
+.xwcard { border-color: var(--accent-soft) }
+.notice { display: flex; flex-direction: column; gap: 8px; border-color: var(--gold); background: linear-gradient(180deg, var(--surface), var(--gold-soft)) }
+.notice .nk { align-self: flex-start; font-size: 11.5px; font-weight: 900; letter-spacing: .06em; color: var(--gold-ink); background: var(--gold-soft); border: 1.5px solid var(--gold); border-radius: 999px; padding: 2px 9px }
+.notice b { font-size: 16px } .notice p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink); word-break: keep-all } .notice p b { font-size: inherit }
 .xmy { color: var(--bad-dk) } .xok { color: var(--accent-dk) }
 .games { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
 .game { border: 2px solid var(--line); border-radius: 20px; background: var(--surface); color: inherit; font: inherit; padding: 14px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 6px; min-height: 150px }
@@ -540,7 +547,7 @@ function save() { S.mt = Date.now(); try { localStorage.setItem(KEY, JSON.string
 const CFG = {"supabaseUrl":"https://ipmivlwitujdstwzixfx.supabase.co","supabaseAnonKey":"sb_publishable_CvuD77QFtEvIMDQHV6tKhQ_CGyJI-yl","providers":[],"appScheme":"kr.mulchilevelup.app"};
 const AUTH_KEY = "ptlvl-auth";
 const DOCS = {"privacy": "# 개인정보처리방침\n\n물치 레벨업(이하 ‘서비스’)을 운영하는 임유신(이하 ‘운영자’)는 「개인정보 보호법」에 따라 이용자의 개인정보를 보호하고 관련 고충을 신속하게 처리하기 위해 다음과 같이 개인정보처리방침을 둡니다.\n\n## 1. 처리하는 개인정보 항목\n- **회원가입하는 경우:**\n  - 아이디, 비밀번호(복호화할 수 없는 방식으로 암호화해 저장), 학교 이름\n  - 아이디와 학교는 순위표에 다른 이용자에게 표시됩니다\n  - 카카오·Google 로그인을 쓰면: 해당 서비스가 제공하는 계정 식별자, 이메일 주소(동의한 경우)\n  - 학습 기록: 키워드별 풀이 기록, 경험치, 일별 학습량, 배지, 하루 목표·시험일 등 앱 설정\n  - 자동 생성 정보: 접속 일시, IP 주소 등 서비스 이용 기록(보안·오류 대응 목적, 서버 운영사 로그)\n  - 앱 이용 기록(로그인한 경우): 마지막 접속 시각, 날짜별 앱 이용 시간(앱이 화면에 떠 있는 동안 2분 단위), 개념 학습·복습·게임·시험을 마친 기록(종류, 걸린 시간, 푼 문항·정답 수)\n  - 문제 신고를 보내는 경우: 신고한 문제 번호, 신고 이유, 직접 쓴 메모, 앱 버전\n- **앱 오류가 생긴 경우(로그인 여부와 관계없이):** 오류 내용, 오류가 난 코드 위치와 화면 이름, 앱 버전, 기기·브라우저 종류(User-Agent). 로그인한 상태라면 계정 식별자가 함께 저장됩니다\n\n## 2. 처리 목적\n- 회원 식별과 로그인 유지\n- 여러 기기에서 학습 기록을 이어서 쓸 수 있도록 저장·동기화\n- 부정 이용 방지, 오류 확인 등 서비스 안정성 확보\n- 서비스 이용 통계 작성과 학습 기능 개선(운영자만 열람하며 다른 이용자에게 공개하지 않음)\n- 문제 신고 확인과 콘텐츠 오류 수정\n\n## 3. 보유·이용 기간\n- 회원 탈퇴(앱의 ‘계정 삭제’) 시 계정과 서버의 학습 기록을 **지체 없이 파기**합니다.\n- 앱 오류 기록은 **30일**이 지나면 자동으로 지웁니다. 문제 신고는 계정을 삭제하면 함께 지웁니다.\n- 1년 이상 로그인하지 않은 계정은 서비스 안 공지 후 파기하거나 분리 보관할 수 있습니다.\n- 관계 법령에 따라 보존이 필요한 경우 그 기간 동안 보관합니다.\n\n## 4. 제3자 제공\n운영자는 이용자의 개인정보를 제3자에게 제공하지 않습니다. 법령에 따른 요청이 있는 경우는 예외입니다.\n\n## 5. 처리 위탁 및 국외 이전\n서비스 운영을 위해 아래와 같이 처리를 위탁하며, 이 과정에서 개인정보가 국외로 이전될 수 있습니다.\n\n| 수탁자 | 위탁 업무 | 이전 국가 | 이전 항목 | 이전 일시·방법 | 보유 기간 |\n|---|---|---|---|---|---|\n| Supabase, Inc. | 회원 인증, 학습 기록·게임 점수·앱 이용 기록·문제 신고·앱 오류 기록 저장(클라우드 데이터베이스) | 대한민국(서울, ap-northeast-2) | 1항의 정보 | 로그인·학습·신고·오류 발생 시 네트워크로 전송 | 회원 탈퇴 시까지(오류 기록은 30일) |\n\n국외 이전에 동의하지 않으면 회원가입을 하지 않을 수 있으나, 이 경우 서비스를 이용할 수 없습니다.\n\n## 6. 이용자의 권리\n이용자는 언제든지 앱에서 다음을 할 수 있습니다.\n- 학습 기록 열람·내보내기: 성장 탭 › 기록 내보내기\n- 기록 삭제: 성장 탭 › 기록 모두 지우기(기기)\n- 회원 탈퇴 및 서버 기록 삭제: 성장 탭 › 계정 › 계정 삭제\n\n그 밖의 요청은 아래 연락처로 할 수 있으며, 지체 없이 처리합니다.\n\n## 7. 만 14세 미만 아동\n서비스는 만 14세 미만 아동의 회원가입을 받지 않습니다.\n\n## 8. 안전성 확보 조치\n- 전송 구간 암호화(HTTPS)\n- 데이터베이스 행 단위 접근 제어: 본인 기록만 읽고 쓸 수 있음\n- 비밀번호는 원문을 알 수 없도록 일방향 암호화해 저장\n\n## 9. 개인정보 보호책임자\n- 책임자: 임유신\n- 연락처: dccy111@naver.com\n\n개인정보 침해 신고·상담은 개인정보침해신고센터(국번 없이 118, privacy.kisa.or.kr), 개인정보분쟁조정위원회(1833-6972, kopico.go.kr)에도 할 수 있습니다.\n\n## 10. 시행일\n이 방침은 2026-11-03부터 적용합니다.\n", "terms": "# 이용약관\n\n## 1. 목적\n이 약관은 임유신(이하 ‘운영자’)가 제공하는 물치 레벨업(이하 ‘서비스’)의 이용 조건을 정합니다.\n\n## 2. 서비스 내용\n- 서비스는 물리치료사 국가시험 준비를 위한 자체 제작 학습 콘텐츠(개념 카드, OX, 키워드 문제 등)와 학습 기록 기능을 제공합니다.\n- 서비스는 한국보건의료인국가시험원과 관련이 없습니다. 국가시험 문제를 싣지 않습니다.\n- ‘출제 분석’과 ‘중요도’는 공개된 과거 시험에서 개념이 다뤄진 빈도를 운영자가 분류한 참고 정보입니다. 실제 출제를 보장하지 않습니다.\n\n## 3. 콘텐츠의 정확성\n- 학습 콘텐츠는 AI의 도움을 받아 작성했고 검수를 계속하고 있습니다. 오류가 있을 수 있습니다.\n- 법규 내용은 개정될 수 있으니 시험 전에 현행 법령(국가법령정보센터)으로 확인하세요.\n- 서비스는 의료 행위나 임상 판단을 대신하지 않습니다.\n- 오류를 발견하면 dccy111@naver.com로 알려 주세요. 확인 후 고칩니다.\n\n## 4. 계정\n- 서비스는 회원가입 후 이용할 수 있습니다. 아이디·비밀번호·학교로 가입하며, 아이디와 학교는 순위표에 표시됩니다.\n- 비밀번호는 이용자가 관리합니다. 이메일을 받지 않으므로 비밀번호를 잊으면 운영자에게 문의해야 합니다.\n- 다른 사람을 사칭하거나 불쾌감을 주는 아이디는 운영자가 변경하거나 이용을 제한할 수 있습니다.\n- 이용자는 언제든지 앱에서 계정을 삭제할 수 있습니다. 삭제하면 서버의 학습 기록도 함께 지워지고 복구할 수 없습니다.\n\n## 5. 금지 행위\n- 서비스 콘텐츠를 무단으로 복제·배포·판매하는 행위\n- 서비스 운영을 방해하거나 다른 사람의 계정을 이용하는 행위\n\n## 6. 지식재산권\n서비스의 콘텐츠와 디자인에 대한 권리는 운영자에게 있습니다.\n\n## 7. 책임의 한계\n운영자는 무료로 제공되는 서비스의 이용과 관련하여 고의 또는 중대한 과실이 없는 한 책임을 지지 않습니다. 시험 결과에 대해서도 책임을 지지 않습니다.\n\n## 8. 약관 변경\n약관을 바꿀 때는 시행 7일 전에 서비스 안에서 알립니다.\n\n## 9. 준거법\n이 약관은 대한민국 법을 따릅니다.\n\n부칙: 이 약관은 2026-11-03부터 적용합니다.\n"};
-const APPVER = "115c3b65";
+const APPVER = "4f36813c";
 /** 고장 알림벨: 처리되지 않은 오류를 오류 내용·위치·화면·버전만 서버에 남긴다(세션당 5건, 같은 오류는 한 번) */
 const ErrLog = { n: 0, seen: new Set(), clean: (x) => String(x || "").replace(/[#?].*$/, ""),
   send(msg, src) { try {
@@ -566,7 +573,8 @@ function mergeState(L, R) {
   for (const [id, r] of Object.entries(L.items || {})) { const x = o.items[id]; if (!x || (r.n || 0) > (x.n || 0) || ((r.n || 0) === (x.n || 0) && (r.t || 0) > (x.t || 0))) o.items[id] = r; }
   o.days = Object.assign({}, R.days);
   for (const [d, r] of Object.entries(L.days || {})) { const x = o.days[d]; o.days[d] = !x ? r : { xp: mx(x.xp, r.xp), n: mx(x.n, r.n), ok: mx(x.ok, r.ok), sec: mx(x.sec, r.sec) }; }
-  o.badges = Object.assign({}, R.badges, L.badges); o.intro = Object.assign({}, R.intro, L.intro); o.lessons = Object.assign({}, R.lessons, L.lessons); o.skills = Object.assign({}, R.skills, L.skills); o.sumRead = Object.assign({}, R.sumRead, L.sumRead);
+  o.badges = Object.assign({}, R.badges, L.badges); o.intro = Object.assign({}, R.intro, L.intro); o.lessons = Object.assign({}, R.lessons, L.lessons); o.skills = Object.assign({}, R.skills, L.skills); o.sumRead = Object.assign({}, R.sumRead, L.sumRead); o.notice = Object.assign({}, R.notice, L.notice);
+  o.wrongs = Object.assign({}, R.wrongs); for (const [k, v] of Object.entries(L.wrongs || {})) { const r = o.wrongs[k]; if (!r || (v.t || 0) >= (r.t || 0)) o.wrongs[k] = v; }
   o.best = {}; const lb = L.best || {}, rb = R.best || {};
   for (const k of new Set([...Object.keys(lb), ...Object.keys(rb)])) o.best[k] = mx(lb[k], rb[k]);
   o.games = Object.assign({}, R.games); for (const [k, v] of Object.entries(L.games || {})) o.games[k] = mx(o.games[k], v);
@@ -762,7 +770,7 @@ function nav(name, p = {}) { route = { name, p }; render(); window.scrollTo(0, 0
 /** 로그인 게이트: 서버가 설정된 출시본은 로그인 + 프로필(아이디·학교)이 있어야 앱을 쓴다 */
 const gate = () => (!Cloud.on ? null : !Cloud.ses ? "login" : Cloud.profile === undefined ? "loading" : Cloud.profile === null ? "signup" : null);
 function render() {
-  if (S.xcur && Date.now() >= S.xcur.ends) { examSubmit(true); return; }
+  if (S.xcur && S.xcur.ends && Date.now() >= S.xcur.ends) { examSubmit(true); return; }
   const g = gate();
   const fn = (g ? V[g] : V[route.name]) || V.home; // 화면이 없으면 홈으로(빈 화면에서 멈추지 않게)
   document.body.classList.toggle("gated", !!g);
@@ -774,7 +782,7 @@ function render() {
   document.body.classList.toggle("has-sheet", !!document.querySelector("#app .sheet"));
   const tabs = [["home", "학습", I.map], ["sum", "요약집", I.book], ["exam", "시험", I.paper], ["game", "게임", I.pad], ["stats", "성장", I.chart]];
   const due = dueItems().length;
-  document.getElementById("tabs").innerHTML = tabs.map(([k, l, ic]) => `<button data-act="tab" data-k="${k}" ${(route.name === k || (k === "game" && route.name === "rank") || (k === "exam" && route.name === "xres") || (k === "sum" && route.name === "sumread") || (k === "stats" && ["admin", "admUser"].includes(route.name)) || (k === "home" && !["game", "stats", "rank", "admin", "admUser", "exam", "xres", "sum", "sumread"].includes(route.name))) ? 'aria-current="page"' : ""}>${ic}${l}${k === "home" && due ? `<span class="dotn num" aria-label="복습할 키워드 ${due}개">${due > 99 ? "99+" : due}</span>` : ""}</button>`).join("");
+  document.getElementById("tabs").innerHTML = tabs.map(([k, l, ic]) => `<button data-act="tab" data-k="${k}" ${(route.name === k || (k === "game" && route.name === "rank") || (k === "exam" && ["xres", "wrongs"].includes(route.name)) || (k === "sum" && route.name === "sumread") || (k === "stats" && ["admin", "admUser"].includes(route.name)) || (k === "home" && !["game", "stats", "rank", "admin", "admUser", "exam", "xres", "sum", "sumread", "wrongs"].includes(route.name))) ? 'aria-current="page"' : ""}>${ic}${l}${k === "home" && due ? `<span class="dotn num" aria-label="복습할 키워드 ${due}개">${due > 99 ? "99+" : due}</span>` : ""}</button>`).join("");
   sumGuard();
   if (live) startTick();
 }
@@ -806,7 +814,9 @@ V.home = () => {
   const due = dueItems(); const nx = nextSkill(); const st = nx ? skillStat(nx) : null; const lv = levelOf(S.xp);
   const subj = S.subj && SUBJ.some((s) => s.id === S.subj) ? S.subj : (nx ? nx.subj : SUBJ[0].id);
   const resume = S.cur && !S.cur.done ? S.cur : null;
+  const notice = !(S.notice && S.notice.n2611) ? `<section class="card notice" data-testid="notice"><div class="nk">새 기능</div><b>해설 모드와 오답노트가 생겼어요</b><p>시험 탭에서 <b>해설 모드</b>를 고르면 시간 제한 없이 풀면서 문제마다 정답과 해설을 바로 볼 수 있어요. 헷갈린 문제는 <b>오답노트</b>에 담아 두고 따로 다시 풀어 보세요.</p><div class="row" style="gap:8px"><button class="btn primary" data-act="noticeGo" style="flex:1">해설 모드로 풀어 보기</button><button class="btn" data-act="noticeClose">닫기</button></div></section>` : "";
   return `${hud()}<div class="stack" style="gap:14px">
+    ${notice}
     ${resume ? `<button class="btn gold block" data-act="resume">이어서 풀기 · ${esc(resume.title)} (${Math.min(resume.i + 1, resume.q.length)}/${resume.q.length})</button>` : ""}
     ${nx ? `<section class="today" data-testid="today">
       <div class="k"><span>${st.seen ? "다음 개념 · 숙련도 올리기" : "오늘의 개념"}</span><span>${esc(SUBJ.find((s) => s.id === nx.subj)?.name || "")}</span></div>
@@ -1499,14 +1509,14 @@ let xtick = null;
 const fmtLeft = (ms) => { const t = Math.max(0, Math.ceil(ms / 1000)); const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), x = t % 60; return h ? `${h}:${pad(m)}:${pad(x)}` : `${m}:${pad(x)}`; };
 const fmtDur = (sec) => { sec = Math.round(sec || 0); const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60); return h ? `${h}시간 ${m}분` : m ? `${m}분` : `${sec}초`; };
 function examTick() {
-  if (xtick) return;
+  if (xtick || !S.xcur || !S.xcur.ends) return;
   xtick = setInterval(() => { const x = S.xcur; if (!x) { clearInterval(xtick); xtick = null; return; }
     const left = x.ends - Date.now(); const el = document.getElementById("xtimer"); if (el) { el.textContent = fmtLeft(left); el.classList.toggle("low", left < 5 * 60000); }
     if (left <= 0) examSubmit(true); }, 1000);
 }
 function examSubmit(auto) {
   const x = S.xcur; if (!x) return; if (xtick) { clearInterval(xtick); xtick = null; }
-  const at = Date.now(); const rec = { id: x.started, at, kind: x.kind, key: String(x.key), title: x.title, n: x.q.length, ok: 0, sec: Math.round((Math.min(at, x.ends) - x.started) / 1000), auto: !!auto, by: {}, byU: {} };
+  const at = Date.now(); const rec = { id: x.started, at, kind: x.kind, key: String(x.key), title: x.title, n: x.q.length, ok: 0, sec: Math.round((Math.min(at, x.ends || at) - x.started) / 1000), auto: !!auto, study: !!x.study, by: {}, byU: {} };
   let answered = 0; S.xseen = S.xseen || {};
   x.q.forEach((e, i) => { const it = IT.get(e.id); if (!it) return; const a = x.ans[i]; const ok = a != null && a === it.a;
     for (const [m, k] of [[rec.by, e.s], [rec.byU, e.u]]) { const r = m[k] || (m[k] = { n: 0, ok: 0 }); r.n++; if (ok) r.ok++; }
@@ -1517,6 +1527,12 @@ function examSubmit(auto) {
   closeModal(); nav("xres", { id: rec.id }); if (auto) toast("시간이 끝나 자동으로 제출했어요");
 }
 const examPct = (r) => pct(r.ok, r.n);
+/* 오답노트: S.wrongs[id] = { t, s, u, o } (지운 것은 { t, del: 1 }로 남겨 기기 간 동기화) */
+const wrongList = () => Object.entries(S.wrongs || {}).filter(([id, w]) => !w.del && IT.has(id)).map(([id, w]) => ({ id, ...w })).sort((a, b) => b.t - a.t);
+const wrongHas = (id) => !!(S.wrongs && S.wrongs[id] && !S.wrongs[id].del);
+function wrongSet(e, on) { S.wrongs = S.wrongs || {}; S.wrongs[e.id] = on ? { t: Date.now(), s: e.s, u: e.u, o: e.o || null } : { t: Date.now(), del: 1 }; }
+const wrongBtn = (e, src, i) => `<button class="chip xwbtn${wrongHas(e.id) ? " on" : ""}" data-act="wToggle" data-src="${src}" data-i="${i}">${wrongHas(e.id) ? "오답노트에서 빼기" : "+ 오답노트에 추가"}</button>`;
+let WUI = { subj: 0 };
 function examVerdict(rec) {
   const fails = Object.entries(rec.by || {}).filter(([, r]) => pct(r.ok, r.n) < 40).map(([k]) => subjName(k));
   const avg = examPct(rec);
@@ -1587,33 +1603,51 @@ document.addEventListener("visibilitychange", () => { if (document.hidden && doc
 window.addEventListener("blur", () => { if (document.body.classList.contains("sumguard")) document.body.classList.add("sumaway"); });
 
 V.exam = () => {
-  const x = S.xcur; const hist = (S.exams || []).slice().reverse();
+  const x = S.xcur; const hist = (S.exams || []).slice().reverse(); const study = S.xmode === "study"; const nW = wrongList().length;
   const best = (kind, key) => { const r = (S.exams || []).filter((e) => e.kind === kind && String(e.key) === String(key)); return r.length ? Math.max(...r.map(examPct)) : null; };
   const sess = (key) => { const m = examMeta("sess", key); const b = best("sess", key);
-    return `<button class="xsess" data-act="examAsk" data-k="sess" data-v="${key}"><span class="t disp">${key}교시</span><span class="n">${m.n}문항 · ${m.mins}분</span><span class="s">${m.subs.map((sj) => `${SUBJ_SHORT[sj]} ${EXAM_TOTAL[sj]}`).join(" · ")}</span><span class="b">${b != null ? `최고 ${b}%` : "첫 응시"}</span></button>`; };
-  const subjRow = (sj) => { const b = best("subj", sj); return `<button class="li" data-act="examAsk" data-k="subj" data-v="${sj.id}"><span class="t">${esc(sj.name)}</span><span class="s">${EXAM_TOTAL[sj.id]}문항 · ${EXAM_TOTAL[sj.id]}분${b != null ? ` · 최고 ${b}%` : ""}</span><span class="r">시작 ›</span></button>`; };
+    return `<button class="xsess" data-act="examAsk" data-k="sess" data-v="${key}"><span class="t disp">${key}교시</span><span class="n">${m.n}문항 · ${study ? "시간 무제한" : m.mins + "분"}</span><span class="s">${m.subs.map((sj) => `${SUBJ_SHORT[sj]} ${EXAM_TOTAL[sj]}`).join(" · ")}</span><span class="b">${b != null ? `최고 ${b}%` : "첫 응시"}</span></button>`; };
+  const subjRow = (sj) => { const b = best("subj", sj); return `<button class="li" data-act="examAsk" data-k="subj" data-v="${sj.id}"><span class="t">${esc(sj.name)}</span><span class="s">${EXAM_TOTAL[sj.id]}문항${study ? "" : ` · ${EXAM_TOTAL[sj.id]}분`}${b != null ? ` · 최고 ${b}%` : ""}</span><span class="r">시작 ›</span></button>`; };
   return `${hud()}<div class="stack" style="gap:16px">
-    ${x ? `<section class="card stack xresume" style="gap:8px"><div class="row between" style="flex-wrap:nowrap"><b>${esc(x.title)} 푸는 중</b><span class="badge warn num">남은 시간 ${fmtLeft(x.ends - Date.now())}</span></div><div class="small muted">${Object.keys(x.ans).length} / ${x.q.length}문항 풀었어요. 시간은 나가 있어도 계속 흘러요.</div><button class="btn primary block" data-act="examResume">이어서 풀기</button></section>` : ""}
+    ${x ? `<section class="card stack xresume" style="gap:8px"><div class="row between" style="flex-wrap:nowrap"><b>${esc(x.title)} 푸는 중</b>${x.ends ? `<span class="badge warn num">남은 시간 ${fmtLeft(x.ends - Date.now())}</span>` : `<span class="badge ok">해설 모드</span>`}</div><div class="small muted">${Object.keys(x.ans).length} / ${x.q.length}문항 풀었어요.${x.ends ? " 시간은 나가 있어도 계속 흘러요." : ""}</div><button class="btn primary block" data-act="examResume">이어서 풀기</button></section>` : ""}
+    <div class="stack" style="gap:6px"><div class="seg2" role="tablist" aria-label="시험 방식" data-testid="xmode"><button role="tab" data-act="xMode" data-v="real" aria-pressed="${!study}">실전 모드</button><button role="tab" data-act="xMode" data-v="study" aria-pressed="${study}">해설 모드</button></div><div class="tiny muted" style="padding:0 4px">${study ? "시간 제한 없이 풀고, 한 문제 풀 때마다 정답과 해설을 바로 보여줘요." : "실제 시험처럼 시간 제한이 있고, 제출한 뒤에 채점과 해설을 보여줘요."}</div></div>
+    <button class="card li xwcard" data-act="wOpen" data-testid="wcard"><span class="t">오답노트</span><span class="s">${nW ? `${nW}문제 · 해설과 함께 다시 보기` : "틀린 문제를 담아 두고 따로 다시 풀 수 있어요"}</span><span class="r">›</span></button>
     <div><h2 class="sec" style="margin:0 0 8px">실전 모의고사</h2><div class="xsess2">${sess(1)}${sess(2)}</div></div>
     <div><h2 class="sec" style="margin:0 0 8px">과목 시험</h2><section class="card" style="padding:2px 18px">${SUBJ.map(subjRow).join("")}</section></div>
-    <div><h2 class="sec" style="margin:0 0 8px">미니 시험 <span class="muted small">20문항 · 20분</span></h2><div class="xmini">${SUBJ.map((sj) => `<button class="chip" data-act="examAsk" data-k="mini" data-v="${sj.id}">${esc(SUBJ_SHORT[sj.id] || sj.name)}</button>`).join("")}</div></div>
-    <div><h2 class="sec" style="margin:0 0 8px">내 시험 기록</h2>${hist.length ? `<section class="card" style="padding:2px 18px">${hist.slice(0, 20).map((r) => { const v = examVerdict(r); return `<button class="li" data-act="examOpen" data-v="${r.id}"><span class="t">${esc(r.title)}</span><span class="s">${dstr(new Date(r.at || r.id))} · ${r.ok}/${r.n} · ${fmtDur(r.sec)}${r.auto ? " · 시간 종료" : ""}</span><span class="r"><span class="num" style="font-size:16px;color:var(--ink)">${examPct(r)}%</span><br><span class="xv ${v.cls}">${esc(v.t.split(" · ")[0])}</span></span></button>`; }).join("")}</section>` : `<section class="card small muted">아직 본 시험이 없어요. 미니 시험(20분)부터 가볍게 시작해 보세요.</section>`}</div>
-    <div class="tiny muted">최근 기출의 단원별 출제 비율대로 문항 수를 맞춰요. 문항당 1분이고, 시간이 끝나면 자동으로 제출돼요. 풀 때는 정답을 알려주지 않고, 제출하면 채점과 틀린 문제 해설을 보여줘요. 맞힌 문제당 2 XP.</div>
+    <div><h2 class="sec" style="margin:0 0 8px">미니 시험 <span class="muted small">20문항${study ? "" : " · 20분"}</span></h2><div class="xmini">${SUBJ.map((sj) => `<button class="chip" data-act="examAsk" data-k="mini" data-v="${sj.id}">${esc(SUBJ_SHORT[sj.id] || sj.name)}</button>`).join("")}</div></div>
+    <div><h2 class="sec" style="margin:0 0 8px">내 시험 기록</h2>${hist.length ? `<section class="card" style="padding:2px 18px">${hist.slice(0, 20).map((r) => { const v = examVerdict(r); return `<button class="li" data-act="examOpen" data-v="${r.id}"><span class="t">${esc(r.title)}</span><span class="s">${r.study ? "해설 모드 · " : ""}${dstr(new Date(r.at || r.id))} · ${r.ok}/${r.n} · ${fmtDur(r.sec)}${r.auto ? " · 시간 종료" : ""}</span><span class="r"><span class="num" style="font-size:16px;color:var(--ink)">${examPct(r)}%</span><br><span class="xv ${v.cls}">${esc(v.t.split(" · ")[0])}</span></span></button>`; }).join("")}</section>` : `<section class="card small muted">아직 본 시험이 없어요. 미니 시험(20분)부터 가볍게 시작해 보세요.</section>`}</div>
+    <div class="tiny muted">최근 기출의 단원별 출제 비율대로 문항 수를 맞춰요. 실전 모드는 문항당 1분이고 시간이 끝나면 자동으로 제출돼요. 해설 모드는 시간 제한 없이 문제마다 해설을 바로 보여줘요. 맞힌 문제당 2 XP.</div>
   </div>`;
 };
 V.xrun = () => {
   const x = S.xcur; if (!x) return V.exam();
   const e = x.q[x.i]; const it = IT.get(e.id) || {}; const a = x.ans[x.i]; const unit = UNIT.get(e.u);
+  const shown = x.study && a != null; const cls = (v) => (!shown ? "" : v === it.a ? " ans" : v === a ? " wrong" : " dim");
   const body = it.k === "ox"
-    ? `<p class="xqt">${inl(String(it.q || ""))}</p><div class="xox">${[[true, "O"], [false, "X"]].map(([v, l]) => `<button class="oxb disp" data-act="xAns" data-v="${v ? 1 : 0}" aria-pressed="${a === v}">${l}</button>`).join("")}</div>`
-    : `<p class="xqt">${inl(String(it.q || ""))}</p><div class="stack" style="gap:8px">${(e.o || []).map((o, k) => `<button class="opt" data-act="xAns" data-v="${k}" aria-pressed="${a === o}"><span class="k">${k + 1}</span><span>${inl(String(o))}</span></button>`).join("")}</div>`;
+    ? `<p class="xqt">${inl(String(it.q || ""))}</p><div class="xox">${[[true, "O"], [false, "X"]].map(([v, l]) => `<button class="oxb disp${cls(v)}" data-act="xAns" data-v="${v ? 1 : 0}" aria-pressed="${a === v}" ${shown ? "disabled" : ""}>${l}</button>`).join("")}</div>`
+    : `<p class="xqt">${inl(String(it.q || ""))}</p><div class="stack" style="gap:8px">${(e.o || []).map((o, k) => `<button class="opt${cls(o)}" data-act="xAns" data-v="${k}" aria-pressed="${a === o}" ${shown ? "disabled" : ""}><span class="k">${k + 1}</span><span>${inl(String(o))}</span></button>`).join("")}</div>`;
+  const okA = a === it.a; const ansT = it.k === "ox" ? (it.a ? "O" : "X") : inl(String(it.a));
+  const fb = shown ? `<div class="lfb ${okA ? "ok" : "bad"}" data-testid="xfb"><b>${okA ? "정답이에요" : `오답이에요 · 정답 ${ansT}`}</b>${it.e ? `<div class="xe">${inl(String(it.e))}</div>` : ""}</div><div class="row" style="justify-content:flex-end">${wrongBtn(e, "cur", x.i)}</div>` : "";
   const done = Object.keys(x.ans).length;
-  return `<div class="xhead"><button class="x" data-act="xQuit" aria-label="시험 나가기">${I.x}</button><div class="xt"><b>${esc(x.title)}</b><span class="num">${x.i + 1} / ${x.q.length} · ${done}문항 풂</span></div><span class="xtime num" id="xtimer">${fmtLeft(x.ends - Date.now())}</span></div>
+  return `<div class="xhead"><button class="x" data-act="xQuit" aria-label="시험 나가기">${I.x}</button><div class="xt"><b>${esc(x.title)}</b><span class="num">${x.i + 1} / ${x.q.length} · ${done}문항 풂</span></div>${x.ends ? `<span class="xtime num" id="xtimer">${fmtLeft(x.ends - Date.now())}</span>` : `<span class="xtime xstudy">해설</span>`}</div>
     <div class="pbar" aria-hidden="true"><i style="width:${(done / x.q.length) * 100}%"></i></div>
-    <section class="card stack xq" style="gap:12px"><div class="tiny muted">${esc(subjName(e.s))} · ${esc(unit ? unit.name : "")} · ${it.k === "ox" ? "O/X" : "고르기"}</div>${body}</section>
+    <section class="card stack xq" style="gap:12px"><div class="tiny muted">${esc(subjName(e.s))} · ${esc(unit ? unit.name : "")} · ${it.k === "ox" ? "O/X" : "고르기"}</div>${body}${fb}</section>
     <div class="xnav"><button class="btn" data-act="xGo" data-v="prev" ${x.i ? "" : "disabled"}>이전</button><button class="btn" data-act="xGrid">번호표</button>${x.i < x.q.length - 1 ? `<button class="btn primary" data-act="xGo" data-v="next">다음</button>` : `<button class="btn primary" data-act="xSubmitAsk">제출</button>`}</div>`;
 };
 let XRES_ALL = false;
+V.wrongs = () => {
+  const all = wrongList(); const subs = SUBJ.filter((sj) => all.some((w) => w.s === sj.id)); const sel = subs.some((sj) => sj.id === WUI.subj) ? WUI.subj : 0;
+  const list = sel ? all.filter((w) => w.s === sel) : all;
+  const ansTxt = (it) => (it.k === "ox" ? (it.a ? "O" : "X") : inl(String(it.a)));
+  return `<div class="stack" style="gap:14px" data-testid="wrongs">
+    <div class="row between"><button class="btn ghost" data-act="tab" data-k="exam" style="padding-left:0">‹ 시험</button><span class="small muted num">${all.length}문제</span></div>
+    <h1 style="margin:0">오답노트</h1>
+    ${all.length ? `<div class="xmini" style="grid-template-columns:repeat(auto-fill,minmax(80px,1fr))"><button class="chip" data-act="wSubj" data-v="0" aria-pressed="${!sel}">전체 ${all.length}</button>${subs.map((sj) => `<button class="chip" data-act="wSubj" data-v="${sj.id}" aria-pressed="${sel === sj.id}">${esc(SUBJ_SHORT[sj.id] || sj.name)} ${all.filter((w) => w.s === sj.id).length}</button>`).join("")}</div>
+    <button class="btn primary block" data-act="wrongStart" data-testid="wstart">${sel ? esc(SUBJ_SHORT[sel] || subjName(sel)) + " " : ""}오답 ${list.length}문제 다시 풀기 · 해설 모드</button>
+    <section class="card" style="padding:4px 18px">${list.map((w) => { const it = IT.get(w.id); const u = UNIT.get(w.u); return `<div class="xwrong"><div class="tiny muted">${esc(subjName(w.s))}${u ? " · " + esc(u.name) : ""} · ${dstr(new Date(w.t))} 담음</div><div style="font-weight:800">${inl(String(it.q || ""))}</div><div class="small">정답 <b class="xok">${ansTxt(it)}</b></div>${it.e ? `<div class="small muted">${inl(String(it.e))}</div>` : ""}<div><button class="chip" data-act="wDel" data-id="${w.id}">오답노트에서 빼기</button></div></div>`; }).join("")}</section>`
+    : `<section class="card small muted">아직 담은 문제가 없어요. 해설 모드에서 문제를 푼 뒤, 또는 시험 결과의 틀린 문제에서 "+ 오답노트에 추가"를 누르면 여기에 모여요.</section>`}
+  </div>`;
+};
 V.xres = ({ id }) => {
   const rec = (S.exams || []).find((r) => String(r.id) === String(id)); if (!rec) return V.exam();
   const v = examVerdict(rec); const avg = examPct(rec);
@@ -1631,10 +1665,10 @@ V.xres = ({ id }) => {
     <div class="xverdict ${v.cls}">${esc(v.t)}</div>
     <section class="card stack" style="gap:12px"><div class="row between"><b>과목별 점수</b><span class="tiny muted">선: 과락 40% · 평균 60%</span></div>${subs}</section>
     ${weak ? `<section class="card" style="padding:6px 18px"><b style="display:block;padding:8px 0 2px">약한 단원</b>${weak}</section>` : ""}
-    ${last ? `<section class="card stack" style="gap:10px"><div class="row between"><b>틀린 문제 다시 보기</b><span class="badge ${wrong.length ? "warn" : "ok"} num">${wrong.length}개</span></div>
-      ${wrong.length ? show.map((w) => `<div class="xwrong"><div class="tiny muted">${w.i + 1}번 · ${esc(subjName(w.e.s))}</div><div style="font-weight:800">${inl(String(w.it.q || ""))}</div><div class="small">내 답 <b class="xmy">${ansTxt(w.it, w.a)}</b> · 정답 <b class="xok">${ansTxt(w.it, w.it.a)}</b></div>${w.it.e ? `<div class="small muted">${inl(String(w.it.e))}</div>` : ""}</div>`).join("") : `<div class="small muted">모두 맞혔어요!</div>`}
+    ${last ? `<section class="card stack" style="gap:10px"><div class="row between"><b>틀린 문제 다시 보기</b><span class="badge ${wrong.length ? "warn" : "ok"} num">${wrong.length}개</span></div>${wrong.some((w) => !wrongHas(w.e.id)) ? `<button class="btn block" data-act="wAddAll" data-testid="waddall">틀린 문제 모두 오답노트에 담기</button>` : wrong.length ? `<div class="small muted">틀린 문제가 모두 오답노트에 있어요.</div>` : ""}
+      ${wrong.length ? show.map((w) => `<div class="xwrong"><div class="tiny muted">${w.i + 1}번 · ${esc(subjName(w.e.s))}</div><div style="font-weight:800">${inl(String(w.it.q || ""))}</div><div class="small">내 답 <b class="xmy">${ansTxt(w.it, w.a)}</b> · 정답 <b class="xok">${ansTxt(w.it, w.it.a)}</b></div>${w.it.e ? `<div class="small muted">${inl(String(w.it.e))}</div>` : ""}<div>${wrongBtn(w.e, "last", w.i)}</div></div>`).join("") : `<div class="small muted">모두 맞혔어요!</div>`}
       ${wrong.length > show.length ? `<button class="btn block" data-act="xAll">나머지 ${wrong.length - show.length}개 더 보기</button>` : ""}</section>` : `<section class="card small muted">틀린 문제 목록은 이 기기에서 방금 본 시험만 볼 수 있어요.</section>`}
-    <div class="stack" style="gap:8px"><button class="btn primary block" data-act="examAsk" data-k="${rec.kind}" data-v="${rec.key}">같은 시험 다시 보기</button><button class="btn block" data-act="tab" data-k="exam">시험 탭으로</button></div>
+    <div class="stack" style="gap:8px">${rec.kind === "wrong" ? `<button class="btn primary block" data-act="wrongStart">오답노트 다시 풀기</button>` : `<button class="btn primary block" data-act="examAsk" data-k="${rec.kind}" data-v="${rec.key}">같은 시험 다시 보기</button>`}${wrongList().length ? `<button class="btn block" data-act="wOpen">오답노트 보기 · ${wrongList().length}문제</button>` : ""}<button class="btn block" data-act="tab" data-k="exam">시험 탭으로</button></div>
   </div>`;
 };
 /* ---------- 성장 탭 ---------- */
@@ -1742,14 +1776,16 @@ const A = {
   bGamePick: (d) => { closeModal(); BOARD.game = d.v; render(); },
   examAsk: (d) => { const m = examMeta(d.k, d.v);
     if (S.xcur) return openModal(`<b style="font-size:18px">푸는 중인 시험이 있어요</b><p class="small" style="margin:0">${esc(S.xcur.title)}을(를) 이어서 풀까요, 버리고 새로 시작할까요?</p><div class="stack" style="gap:8px"><button class="btn primary block" data-act="examResume">이어서 풀기</button><button class="btn block" data-act="examStart" data-k="${d.k}" data-v="${d.v}" data-force="1">버리고 ${esc(m.title)} 시작</button><button class="btn ghost block" data-act="modalClose">닫기</button></div>`);
-    openModal(`<b style="font-size:18px">${esc(m.title)}</b><p class="small" style="margin:0">${m.n}문항 · 제한 시간 ${m.mins}분<br>풀 때는 정답을 알려주지 않아요. 번호표로 건너뛰거나 돌아가 고칠 수 있고, 시간이 끝나면 자동으로 제출돼요.</p><div class="row"><button class="btn" data-act="modalClose" style="flex:1">취소</button><button class="btn primary" data-act="examStart" data-k="${d.k}" data-v="${d.v}" style="flex:1">시작</button></div>`); },
+    openModal(`<b style="font-size:18px">${esc(m.title)}${S.xmode === "study" ? " · 해설 모드" : ""}</b><p class="small" style="margin:0">${S.xmode === "study" ? `${m.n}문항 · 시간 제한 없음<br>한 문제를 풀 때마다 정답과 해설을 바로 보여줘요. 헷갈린 문제는 오답노트에 담아 두세요.` : `${m.n}문항 · 제한 시간 ${m.mins}분<br>풀 때는 정답을 알려주지 않아요. 번호표로 건너뛰거나 돌아가 고칠 수 있고, 시간이 끝나면 자동으로 제출돼요.`}</p><div class="row"><button class="btn" data-act="modalClose" style="flex:1">취소</button><button class="btn primary" data-act="examStart" data-k="${d.k}" data-v="${d.v}" style="flex:1">시작</button></div>`); },
   examStart: (d) => { const m = examMeta(d.k, d.v); const now = Date.now();
-    S.xcur = { kind: d.k, key: d.k === "sess" ? Number(d.v) : String(d.v), title: m.title, q: buildExam(d.k, d.k === "sess" ? Number(d.v) : Number(d.v)), ans: {}, i: 0, started: now, ends: now + m.mins * 60000 };
+    const st = S.xmode === "study";
+    S.xcur = { kind: d.k, key: d.k === "sess" ? Number(d.v) : String(d.v), title: m.title + (st ? " · 해설 모드" : ""), q: buildExam(d.k, d.k === "sess" ? Number(d.v) : Number(d.v)), ans: {}, i: 0, started: now, ends: st ? null : now + m.mins * 60000, study: st };
     save(); closeModal(); nav("xrun"); },
   examResume: () => { closeModal(); if (S.xcur) nav("xrun"); },
   examOpen: (d) => nav("xres", { id: d.v }),
-  xAns: (d) => { const x = S.xcur; if (!x) return; const e = x.q[x.i]; const it = IT.get(e.id); if (!it) return;
+  xAns: (d) => { const x = S.xcur; if (!x) return; const e = x.q[x.i]; const it = IT.get(e.id); if (!it) return; if (x.study && x.ans[x.i] != null) return;
     x.ans[x.i] = it.k === "ox" ? d.v === "1" : e.o[Number(d.v)]; save(); render();
+    if (x.study) { if (x.ans[x.i] === it.a) SFX.ok && SFX.ok(); return; }
     if (x.i < x.q.length - 1) setTimeout(() => { if (S.xcur === x && route.name === "xrun") { x.i++; save(); render(); window.scrollTo(0, 0); } }, 220); },
   xGo: (d) => { const x = S.xcur; if (!x) return; x.i = d.v === "prev" ? Math.max(0, x.i - 1) : d.v === "next" ? Math.min(x.q.length - 1, x.i + 1) : Math.max(0, Math.min(x.q.length - 1, Number(d.v))); save(); closeModal(); render(); window.scrollTo(0, 0); },
   xGrid: () => { const x = S.xcur; if (!x) return; const left = x.q.length - Object.keys(x.ans).length;
@@ -1757,8 +1793,20 @@ const A = {
   xSubmitAsk: () => { const x = S.xcur; if (!x) return; const left = x.q.length - Object.keys(x.ans).length;
     openModal(`<b style="font-size:18px">제출할까요?</b><p class="small" style="margin:0">${left ? `안 푼 문항이 ${left}개 있어요. 안 푼 문항은 틀린 것으로 채점돼요.` : "모든 문항을 풀었어요."} 제출하면 바로 채점해요.</p><div class="row"><button class="btn" data-act="modalClose" style="flex:1">계속 풀기</button><button class="btn primary" data-act="xSubmit" style="flex:1">제출</button></div>`); },
   xSubmit: () => examSubmit(false),
-  xQuit: () => openModal(`<b style="font-size:18px">시험을 잠시 나갈까요?</b><p class="small" style="margin:0">푼 답은 저장돼요. 시험 탭에서 이어서 풀 수 있지만, 시간은 계속 흘러서 끝나면 자동으로 제출돼요.</p><div class="stack" style="gap:8px"><button class="btn primary block" data-act="modalClose">계속 풀기</button><button class="btn block" data-act="xLeave">나가기</button><button class="btn ghost block" data-act="xSubmitAsk">지금 제출</button></div>`),
+  xQuit: () => openModal(`<b style="font-size:18px">시험을 잠시 나갈까요?</b><p class="small" style="margin:0">${S.xcur && !S.xcur.ends ? "푼 답은 저장돼요. 시험 탭에서 언제든 이어서 풀 수 있어요." : "푼 답은 저장돼요. 시험 탭에서 이어서 풀 수 있지만, 시간은 계속 흘러서 끝나면 자동으로 제출돼요."}</p><div class="stack" style="gap:8px"><button class="btn primary block" data-act="modalClose">계속 풀기</button><button class="btn block" data-act="xLeave">나가기</button><button class="btn ghost block" data-act="xSubmitAsk">지금 제출</button></div>`),
   xLeave: () => { closeModal(); nav("exam"); },
+  xMode: (d) => { S.xmode = d.v === "study" ? "study" : "real"; save(); render(); },
+  wOpen: () => { closeModal(); nav("wrongs"); },
+  wSubj: (d) => { WUI.subj = Number(d.v) || 0; render(); },
+  wToggle: (d) => { const src = d.src === "cur" ? S.xcur : S.xlast; if (!src) return; const e = src.q[Number(d.i)]; if (!e) return; const on = !wrongHas(e.id); wrongSet(e, on); save(); render(); toast(on ? "오답노트에 담았어요" : "오답노트에서 뺐어요"); },
+  wAddAll: () => { const l = S.xlast; if (!l) return; let n = 0; l.q.forEach((e, i) => { const it = IT.get(e.id); if (it && l.ans[i] !== it.a && !wrongHas(e.id)) { wrongSet(e, true); n++; } }); save(); render(); toast(`${n}문제를 오답노트에 담았어요`); },
+  wDel: (d) => { if (!wrongHas(d.id)) return; wrongSet({ id: d.id }, false); save(); render(); toast("오답노트에서 뺐어요"); },
+  wrongStart: () => { const all = wrongList(); const list = WUI.subj ? all.filter((w) => w.s === WUI.subj) : all; if (!list.length) return toast("오답노트가 비어 있어요");
+    if (S.xcur) return openModal(`<b style="font-size:18px">푸는 중인 시험이 있어요</b><p class="small" style="margin:0">${esc(S.xcur.title)}을(를) 먼저 끝내거나 제출해 주세요.</p><div class="stack" style="gap:8px"><button class="btn primary block" data-act="examResume">이어서 풀기</button><button class="btn ghost block" data-act="modalClose">닫기</button></div>`);
+    const now = Date.now(); const q = shuffle(list.slice()).map((w) => { const it = IT.get(w.id); return { id: w.id, u: w.u, s: w.s, o: it.k === "pick" ? (w.o && w.o.includes(it.a) ? shuffle(w.o.slice()) : shuffle([it.a, ...shuffle(it.ch.filter((c) => c !== it.a)).slice(0, 3)])) : null }; });
+    S.xcur = { kind: "wrong", key: String(WUI.subj || "all"), title: "오답노트 다시 풀기", q, ans: {}, i: 0, started: now, ends: null, study: true }; save(); closeModal(); nav("xrun"); },
+  noticeGo: () => { S.notice = { ...(S.notice || {}), n2611: 1 }; S.xmode = "study"; save(); nav("exam"); },
+  noticeClose: () => { S.notice = { ...(S.notice || {}), n2611: 1 }; save(); render(); },
   xAll: () => { XRES_ALL = true; render(); },
   reviewOpen: () => { REVIEW_OPEN = !REVIEW_OPEN; render(); },
   admReload: () => { ADM[ADM.view] = null; ADM.err = ""; render(); },
