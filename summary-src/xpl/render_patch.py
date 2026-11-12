@@ -18,7 +18,7 @@ function xplHtml(it, mine, shown) {
   return `<div class="xpl" data-testid="xpl">
     <div class="xk">핵심 단서</div><ul>${li(x.c)}</ul>
     <div class="xk">왜 정답인가</div><p>${inl(String(x.w))}</p>
-    ${mineX ? `<div class="xmine"><b>내가 고른 '${inl(String(mine))}'</b>${inl(String(mineX[0]))}${mineX[1] ? `<span>맞는 상황: ${inl(String(mineX[1]))}</span>` : ""}</div>` : ""}
+    ${mineX ? `<div class="xmine"><b>내가 고른 '${inl(String(mine))}'</b><p>${inl(String(mineX[0]))}</p>${mineX[1] ? `<span>맞는 상황: ${inl(String(mineX[1]))}</span>` : ""}</div>` : ""}
     <div class="xone"><b>한 줄 기억법</b>${inl(String(x.m))}</div>
     <details class="xmore"><summary>자세히 보기 · 오답 분석과 시험 전략</summary>
       <div class="xk">문제 위치</div><p class="small">${esc(subjName(sk.subj))} → ${esc(u ? u.name : "")} → ${esc(sk.name || "")} → ${inl(String(x.p))}<br>유형: ${esc(x.t)}</p>
